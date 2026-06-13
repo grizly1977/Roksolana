@@ -21,75 +21,32 @@
       --radius:    12px;
       --shadow:    0 2px 14px rgba(0,0,0,.07);
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg); color: var(--text);
       -webkit-font-smoothing: antialiased;
       padding-bottom: max(env(safe-area-inset-bottom), 32px);
     }
-
-    .hdr {
-      background: var(--dark);
-      padding: 18px 20px 14px;
-      padding-top: max(env(safe-area-inset-top), 18px);
-      position: sticky; top: 0; z-index: 100;
-    }
+    .hdr { background: var(--dark); padding: 18px 20px 14px; padding-top: max(env(safe-area-inset-top), 18px); position: sticky; top: 0; z-index: 100; }
     .hdr-brand { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
     .hdr-title { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
-
-    .tabs {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      position: sticky; z-index: 99;
-      display: flex; overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
+    .tabs { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; z-index: 99; display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .tabs::-webkit-scrollbar { display: none; }
-    .tab {
-      flex: 0 0 auto; padding: 13px 16px 11px;
-      font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer;
-      white-space: nowrap; border-bottom: 2.5px solid transparent;
-      transition: color .2s, border-color .2s;
-      touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none;
-    }
-    .tab .cnt {
-      display: inline-flex; align-items: center; justify-content: center;
-      min-width: 18px; height: 18px; padding: 0 5px;
-      border-radius: 9px; background: var(--border);
-      font-size: 10px; font-weight: 700; color: var(--text2);
-      margin-left: 5px; transition: background .2s, color .2s;
-    }
+    .tab { flex: 0 0 auto; padding: 13px 16px 11px; font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer; white-space: nowrap; border-bottom: 2.5px solid transparent; transition: color .2s, border-color .2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; }
+    .tab .cnt { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--border); font-size: 10px; font-weight: 700; color: var(--text2); margin-left: 5px; transition: background .2s, color .2s; }
     .tab.active { color: var(--text); border-bottom-color: var(--gold); }
     .tab.active .cnt { background: var(--gold); color: #fff; }
-
     .content { padding: 16px; max-width: 960px; margin: 0 auto; }
     .section { display: none; }
     .section.active { display: block; animation: fadeUp .22s ease both; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-
-    .card {
-      background: var(--white); border-radius: var(--radius);
-      box-shadow: var(--shadow); border: 1px solid transparent;
-      margin-bottom: 10px; overflow: hidden;
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid transparent; margin-bottom: 10px; overflow: hidden; }
     .card.is-new { background: var(--new-bg); border-color: var(--new-bdr); }
-    .card-head {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 14px 10px; border-bottom: 1px solid var(--border);
-    }
+    .card-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 10px; border-bottom: 1px solid var(--border); }
     .card.is-new .card-head { border-bottom-color: var(--new-bdr); }
     .prod-name { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.2px; }
-    .badge-new {
-      font-size: 10px; font-weight: 700; letter-spacing: .4px; color: var(--gold);
-      background: rgba(212,168,83,.12); border: 1px solid rgba(212,168,83,.30);
-      padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
-    }
-
+    .badge-new { font-size: 10px; font-weight: 700; letter-spacing: .4px; color: var(--gold); background: rgba(212,168,83,.12); border: 1px solid rgba(212,168,83,.30); padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
     .srow { display: flex; align-items: center; padding: 9px 14px; gap: 10px; border-bottom: 1px solid var(--border); }
     .srow:last-child { border-bottom: none; }
     .card.is-new .srow { border-bottom-color: var(--new-bdr); }
@@ -97,34 +54,17 @@
     .qty { font-size: 13px; font-weight: 700; color: var(--text); min-width: 52px; flex-shrink: 0; }
     .qty em { font-size: 10px; font-style: normal; font-weight: 400; color: var(--text3); margin-left: 2px; }
     .swatches { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; }
-    .sw {
-      width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.14);
-      transition: transform .15s; flex-shrink: 0;
-      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-    }
+    .sw { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; box-shadow: inset 0 0 0 1px rgba(0,0,0,.14); transition: transform .15s; flex-shrink: 0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
     .sw:hover { transform: scale(1.25); }
     .sw:active { transform: scale(.9); }
-    .sw-tbd {
-      width: 22px; height: 22px; border-radius: 50%;
-      border: 1.5px dashed var(--text3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; color: var(--text3); flex-shrink: 0; font-weight: 700;
-    }
-
-    .tt {
-      position: fixed; z-index: 300; background: #1a1a2e;
-      border-radius: 12px; padding: 12px 14px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.28); min-width: 140px;
-      display: none; pointer-events: none;
-    }
+    .sw-tbd { width: 22px; height: 22px; border-radius: 50%; border: 1.5px dashed var(--text3); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text3); flex-shrink: 0; font-weight: 700; }
+    .tt { position: fixed; z-index: 300; background: #1a1a2e; border-radius: 12px; padding: 12px 14px; box-shadow: 0 8px 32px rgba(0,0,0,.28); min-width: 140px; display: none; pointer-events: none; }
     .tt.on { display: block; pointer-events: auto; }
     .tt-swatch { width: 36px; height: 36px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); margin-bottom: 8px; }
     .tt-name { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 3px; }
     .tt-hex { font-size: 12px; color: var(--gold); font-family: 'SF Mono','Menlo',monospace; letter-spacing: .5px; }
     .tt-hint { margin-top: 9px; font-size: 10px; color: rgba(255,255,255,.4); text-align: center; padding-top: 7px; border-top: 1px solid rgba(255,255,255,.08); }
     .tt-hint.ok { color: #7ec98a; }
-
     .ftr { background: var(--dark); padding: 24px 20px; padding-bottom: max(env(safe-area-inset-bottom), 24px); }
     .ftr-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
     .totals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -132,14 +72,9 @@
     .tc-lbl { font-size: 11px; color: rgba(255,255,255,.4); margin-bottom: 5px; }
     .tc-val { font-size: 24px; font-weight: 700; color: #fff; letter-spacing: -.5px; }
     .tc-val span { font-size: 11px; font-weight: 400; color: var(--gold); margin-left: 2px; }
-    .grand { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.08); display: flex; justify-content: space-between; align-items: center; }
-    .grand-lbl { font-size: 13px; color: rgba(255,255,255,.55); }
-    .grand-val { font-size: 26px; font-weight: 700; color: var(--gold2); letter-spacing: -.5px; }
-
     @media (min-width: 700px) {
       .hdr { padding: 20px 32px 16px; } .hdr-title { font-size: 19px; }
       .content { padding: 24px 32px; } .ftr { padding: 28px 32px; padding-bottom: 32px; }
-      .totals { grid-template-columns: repeat(4, 1fr); }
       .card-head { padding: 13px 18px 11px; } .prod-name { font-size: 15px; }
       .srow { padding: 10px 18px; gap: 14px; }
       .sz { min-width: 52px; font-size: 12px; } .qty { font-size: 14px; min-width: 60px; }
@@ -175,21 +110,18 @@
       {p:'Alpaca Wool Socks',s:'S/M',q:140,u:'dz',n:false,c:[{h:'#F0B0C0',t:'Нежно-розовый'},{h:'#90D0C0',t:'Мятный'},{h:'#D8C8A8',t:'Бежевый'},{h:'#A0C8E8',t:'Голубой'},{h:'#C8C8C8',t:'Светло-серый'},{h:'#C8A8D8',t:'Лавандовый'}]},
       {p:'Bear Wool Socks',s:'L/XL',q:100,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#3A1A08',t:'Тёмный шоколад'},{h:'#7A4020',t:'Карамельный'},{h:'#383838',t:'Антрацит'}]},
       {p:'Bear Wool Socks',s:'S/M',q:100,u:'dz',n:false,c:[{h:'#602898',t:'Фиолетовый'},{h:'#E05880',t:'Ярко-розовый'},{h:'#9A1828',t:'Тёмно-красный'},{h:'#111111',t:'Чёрный'},{h:'#808080',t:'Серый'},{h:'#1A5028',t:'Тёмно-зелёный'}]},
-      {p:'Mink Wool Socks',s:'L/XL',q:25,u:'dz',n:true,c:[]},
-      {p:'Mink Wool Socks',s:'S/M',q:25,u:'dz',n:true,c:[]},
-      {p:'Camel Wool Socks',s:'L/XL',q:25,u:'dz',n:true,c:[]},
-      {p:'Camel Wool Socks',s:'S/M',q:25,u:'dz',n:true,c:[]},
-      {p:'Bison Wool Socks',s:'L/XL',q:50,u:'dz',n:true,c:[]},
-      {p:'Bison Wool Socks',s:'S/M',q:50,u:'dz',n:true,c:[]}
+      {p:'Mink Wool Socks',s:'L/XL',q:25,u:'dz',n:true,c:[]},{p:'Mink Wool Socks',s:'S/M',q:25,u:'dz',n:true,c:[]},
+      {p:'Camel Wool Socks',s:'L/XL',q:25,u:'dz',n:true,c:[]},{p:'Camel Wool Socks',s:'S/M',q:25,u:'dz',n:true,c:[]},
+      {p:'Bison Wool Socks',s:'L/XL',q:50,u:'dz',n:true,c:[]},{p:'Bison Wool Socks',s:'S/M',q:50,u:'dz',n:true,c:[]}
     ]},
-    { id:'cotton', name:'Хлопок', items:[
+    { id:'cotton', name:'Житомир', items:[
       {p:'Zhytomyr Cotton',s:'L/XL',q:240,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#3A2010',t:'Тёмно-коричневый'},{h:'#2A6070',t:'Стальной'},{h:'#D0C090',t:'Бежевый'}]},
       {p:'Zhytomyr Cotton',s:'S/M',q:60,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#F5F5F5',t:'Белый'},{h:'#C8C8C8',t:'Светло-серый'},{h:'#4A2810',t:'Тёмно-коричневый'}]}
     ]},
     { id:'diab', name:'Диабетические', items:[
       {p:'Diabetic Mesh',s:'OneSize',q:50,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#907868',t:'Тёплый серый'},{h:'#D0C0A0',t:'Бежевый'}]},
       {p:'Diabetic Cotton',s:'S/M',q:200,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#4880A0',t:'Стальной синий'},{h:'#907050',t:'Коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#D8C8A0',t:'Бежевый'},{h:'#C0C0C0',t:'Светло-серый'}]},
-      {p:'Diabetic Cotton',s:'M/L',q:400,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#4880A0',t:'Стальной синий'},{h:'#907050',t:'Коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#D8C8A0',t:'Бежевый'},{h:'#C0C0C0',t:'Светло-серый'}]},
+      {p:'Diabetic Cotton',s:'M/L',q:400,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#4880A0',t:'Стальной синий'},{h:'#907050',t:'Коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#D8C8A0',t:'Бежевый'},{h:'#C0C0C0',t:'Светмо-серый'}]},
       {p:'Diabetic Cotton',s:'L/XL',q:400,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#484848',t:'Тёмно-серый'},{h:'#4A2810',t:'Тёмно-коричневый'},{h:'#D8C8A0',t:'Бежевый'}]},
       {p:'Diabetic Lavender',s:'S/M',q:50,u:'dz',n:false,c:[{h:'#A0B870',t:'Шалфей'},{h:'#C09870',t:'Светло-коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#80D0C0',t:'Мятный'},{h:'#90C8E8',t:'Голубой'}]},
       {p:'Diabetic Lavender',s:'M/L',q:100,u:'dz',n:false,c:[{h:'#A0B870',t:'Шалфей'},{h:'#C09870',t:'Светло-коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#80D0C0',t:'Мятный'},{h:'#90C8E8',t:'Голубой'}]},
@@ -206,23 +138,28 @@
   ];
 
   function groupBy(items){const m=new Map();items.forEach(r=>{if(!m.has(r.p))m.set(r.p,{p:r.p,n:r.n,rows:[]});m.get(r.p).rows.push(r);});return[...m.values()];}
-  function sw(c){if(!c.length)return'<span class="sw-tbd">?</span>';return c.map(x=>`<span class="sw" style="background:${x.h}" data-h="${x.h}" data-t="${x.t}"></span>`).join('');}
-  function buildSec(cat){const g=groupBy(cat.items);let h=`<div class="section" id="s-${cat.id}">`;g.forEach(x=>{h+=`<div class="card${x.n?' is-new':''}"><div class="card-head"><span class="prod-name">${x.p}</span>${x.n?'<span class="badge-new">❆ Новинка</span>':''}</div>`;x.rows.forEach(r=>{h+=`<div class="srow"><span class="sz">${r.s}</span><span class="qty">${r.q}<em>${r.u}</em></span><div class="swatches">${sw(r.c)}</div></div>`;});h+='</div>';});return h+'</div>';}
+  function swatchesHTML(c){if(!c.length)return'<span class="sw-tbd">?</span>';return c.map(x=>`<span class="sw" style="background:${x.h}" data-h="${x.h}" data-t="${x.t}"></span>`).join('');}
+  function buildSection(cat){const g=groupBy(cat.items);let h=`<div class="section" id="s-${cat.id}">`;g.forEach(x=>{h+=`<div class="card${x.n?' is-new':''}"><div class="card-head"><span class="prod-name">${x.p}</span>${x.n?'<span class="badge-new">❆ Новинка</span>':''}</div>`;x.rows.forEach(r=>{h+=`<div class="srow"><span class="sz">${r.s}</span><span class="qty">${r.q}<em>${r.u}</em></span><div class="swatches">${swatchesHTML(r.c)}</div></div>`;});h+='</div>';});return h+'</div>';}
 
   $(function(){
     const $tb=$('#tabs'),$ct=$('#content');
     CATS.forEach((cat,i)=>{
       const u=new Set(cat.items.map(r=>r.p)).size;
       $tb.append(`<div class="tab${i===0?' active':''}" data-id="${cat.id}">${cat.name}<span class="cnt">${u}</span></div>`);
-      const $s=$(buildSec(cat)); if(i===0)$s.addClass('active'); $ct.append($s);
+      const $s=$(buildSection(cat)); if(i===0)$s.addClass('active'); $ct.append($s);
     });
     const hH=$('.hdr').outerHeight(); $('.tabs').css('top',hH);
-    $tb.on('click','.tab',function(){const id=$(this).data('id');$('.tab').removeClass('active');$(this).addClass('active');$('.section').removeClass('active');$(`#s-${id}`).addClass('active');hide();window.scrollTo({top:hH+$('.tabs').outerHeight(),behavior:'smooth'});});
 
-    let w=0,co=0,d=0,tp=0;
-    CATS[0].items.forEach(r=>w+=r.q); CATS[1].items.forEach(r=>co+=r.q);
-    CATS[2].items.forEach(r=>d+=r.q); CATS[3].items.forEach(r=>tp+=r.q);
-    $('#ftr').html(`<div class="ftr-label">Итого по заказу</div><div class="totals"><div class="tc"><div class="tc-lbl">Шерстяные носки</div><div class="tc-val">${w}<span>dz</span></div></div><div class="tc"><div class="tc-lbl">Хлопок</div><div class="tc-val">${co}<span>dz</span></div></div><div class="tc"><div class="tc-lbl">Диабетические</div><div class="tc-val">${d}<span>dz</span></div></div><div class="tc"><div class="tc-lbl">Колготки</div><div class="tc-val">${tp}<span>шт</span></div></div></div><div class="grand"><span class="grand-lbl">Всего носков</span><span class="grand-val">${w+co+d} dz</span></div>`);
+    function renderFooter(catId){
+      const cat=CATS.find(c=>c.id===catId);
+      const total=cat.items.reduce((s,r)=>s+r.q,0);
+      const unit=cat.items[0]?.u||'dz';
+      const prods=new Set(cat.items.map(r=>r.p)).size;
+      $('#ftr').html(`<div class="ftr-label">Итого · ${cat.name}</div><div class="totals" style="grid-template-columns:1fr 1fr"><div class="tc"><div class="tc-lbl">Количество</div><div class="tc-val">${total}<span>${unit}</span></div></div><div class="tc"><div class="tc-lbl">Наименований</div><div class="tc-val">${prods}</div></div></div>`);
+    }
+    renderFooter(CATS[0].id);
+
+    $tb.on('click','.tab',function(){const id=$(this).data('id');$('.tab').removeClass('active');$(this).addClass('active');$('.section').removeClass('active');$(`#s-${id}`).addClass('active');hide();renderFooter(id);window.scrollTo({top:hH+$('.tabs').outerHeight(),behavior:'smooth'});});
 
     const $tt=$('#tt'),$tsw=$('#tt-sw'),$tnm=$('#tt-nm'),$thx=$('#tt-hx'),$tht=$('#tt-ht');
     let $a=null;
