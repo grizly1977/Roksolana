@@ -294,7 +294,7 @@
       ]
     },
     {
-      id: 'cotton', name: 'Хлопок',
+      id: 'cotton', name: 'Житомир',
       items: [
         { p:'Zhytomyr Cotton', s:'L/XL', q:240, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#3A2010',t:'Тёмно-коричневый'},{h:'#2A6070',t:'Стальной'},{h:'#D0C090',t:'Бежевый'}] },
         { p:'Zhytomyr Cotton', s:'S/M',  q:60,  u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#F5F5F5',t:'Белый'},{h:'#C8C8C8',t:'Светло-серый'},{h:'#4A2810',t:'Тёмно-коричневый'}] },
@@ -391,30 +391,31 @@
       $('.section').removeClass('active');
       $(`#s-${id}`).addClass('active');
       hideTooltip();
+      renderFooter(id);
       window.scrollTo({ top: hdrH + $('.tabs').outerHeight(), behavior: 'smooth' });
     });
 
-    // Footer totals
-    let wool=0, cotton=0, diab=0, tightsPcs=0;
-    CATS[0].items.forEach(r => wool   += r.q);
-    CATS[1].items.forEach(r => cotton += r.q);
-    CATS[2].items.forEach(r => diab   += r.q);
-    CATS[3].items.forEach(r => tightsPcs += r.q);
-    const socksDz = wool + cotton + diab;
-
-    $('#ftr').html(`
-      <div class="ftr-label">Итого по заказу</div>
-      <div class="totals">
-        <div class="tc"><div class="tc-lbl">Шерстяные носки</div><div class="tc-val">${wool}<span>dz</span></div></div>
-        <div class="tc"><div class="tc-lbl">Хлопок</div><div class="tc-val">${cotton}<span>dz</span></div></div>
-        <div class="tc"><div class="tc-lbl">Диабетические</div><div class="tc-val">${diab}<span>dz</span></div></div>
-        <div class="tc"><div class="tc-lbl">Колготки</div><div class="tc-val">${tightsPcs}<span>шт</span></div></div>
-      </div>
-      <div class="grand">
-        <span class="grand-lbl">Всего носков</span>
-        <span class="grand-val">${socksDz} dz</span>
-      </div>
-    `);
+    // Footer — контекстный итог для активного таба
+    function renderFooter(catId) {
+      const cat = CATS.find(c => c.id === catId);
+      const total = cat.items.reduce((s, r) => s + r.q, 0);
+      const unit  = cat.items[0]?.u || 'dz';
+      const prods = new Set(cat.items.map(r => r.p)).size;
+      $('#ftr').html(`
+        <div class="ftr-label">Итого · ${cat.name}</div>
+        <div class="totals" style="grid-template-columns:1fr 1fr">
+          <div class="tc">
+            <div class="tc-lbl">Количество</div>
+            <div class="tc-val">${total}<span>${unit}</span></div>
+          </div>
+          <div class="tc">
+            <div class="tc-lbl">Наименований</div>
+            <div class="tc-val">${prods}</div>
+          </div>
+        </div>
+      `);
+    }
+    renderFooter(CATS[0].id);
 
     // Tooltip
     const $tt = $('#tt'), $sw = $('#tt-sw'), $nm = $('#tt-nm'), $hx = $('#tt-hx'), $ht = $('#tt-ht');
