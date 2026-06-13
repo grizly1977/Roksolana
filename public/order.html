@@ -21,153 +21,452 @@
       --radius:    12px;
       --shadow:    0 2px 14px rgba(0,0,0,.07);
     }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-      background: var(--bg); color: var(--text);
+      background: var(--bg);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
       padding-bottom: max(env(safe-area-inset-bottom), 32px);
     }
-    .hdr { background: var(--dark); padding: 18px 20px 14px; padding-top: max(env(safe-area-inset-top), 18px); position: sticky; top: 0; z-index: 100; }
-    .hdr-brand { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: 3px; }
-    .hdr-title { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
-    .tabs { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; z-index: 99; display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+
+    /* ── Header ── */
+    .hdr {
+      background: var(--dark);
+      padding: 18px 20px 14px;
+      padding-top: max(env(safe-area-inset-top), 18px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .hdr-brand {
+      font-size: 10px; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 3px;
+    }
+    .hdr-title {
+      font-size: 17px; font-weight: 700;
+      color: #fff; letter-spacing: -.3px;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky; z-index: 99;
+      display: flex; overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
     .tabs::-webkit-scrollbar { display: none; }
-    .tab { flex: 0 0 auto; padding: 13px 16px 11px; font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer; white-space: nowrap; border-bottom: 2.5px solid transparent; transition: color .2s, border-color .2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; }
-    .tab .cnt { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--border); font-size: 10px; font-weight: 700; color: var(--text2); margin-left: 5px; transition: background .2s, color .2s; }
+
+    .tab {
+      flex: 0 0 auto;
+      padding: 13px 16px 11px;
+      font-size: 13px; font-weight: 600;
+      color: var(--text2); cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2.5px solid transparent;
+      transition: color .2s, border-color .2s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .tab .cnt {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; padding: 0 5px;
+      border-radius: 9px; background: var(--border);
+      font-size: 10px; font-weight: 700; color: var(--text2);
+      margin-left: 5px; transition: background .2s, color .2s;
+    }
     .tab.active { color: var(--text); border-bottom-color: var(--gold); }
     .tab.active .cnt { background: var(--gold); color: #fff; }
-    .content { padding: 16px; max-width: 960px; margin: 0 auto; }
+
+    /* ── Content ── */
+    .content {
+      padding: 16px; max-width: 960px; margin: 0 auto;
+    }
     .section { display: none; }
-    .section.active { display: block; animation: fadeUp .22s ease both; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid transparent; margin-bottom: 10px; overflow: hidden; }
-    .card.is-new { background: var(--new-bg); border-color: var(--new-bdr); }
-    .card-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 10px; border-bottom: 1px solid var(--border); }
+    .section.active {
+      display: block;
+      animation: fadeUp .22s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Product card ── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid transparent;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .card.is-new {
+      background: var(--new-bg);
+      border-color: var(--new-bdr);
+    }
+
+    .card-head {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--border);
+    }
     .card.is-new .card-head { border-bottom-color: var(--new-bdr); }
-    .prod-name { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.2px; }
-    .badge-new { font-size: 10px; font-weight: 700; letter-spacing: .4px; color: var(--gold); background: rgba(212,168,83,.12); border: 1px solid rgba(212,168,83,.30); padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
-    .srow { display: flex; align-items: center; padding: 9px 14px; gap: 10px; border-bottom: 1px solid var(--border); }
+
+    .prod-name {
+      font-size: 14px; font-weight: 700;
+      color: var(--text); letter-spacing: -.2px;
+    }
+    .badge-new {
+      font-size: 10px; font-weight: 700; letter-spacing: .4px;
+      color: var(--gold);
+      background: rgba(212,168,83,.12);
+      border: 1px solid rgba(212,168,83,.30);
+      padding: 2px 8px; border-radius: 20px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ── Size row ── */
+    .srow {
+      display: flex; align-items: center;
+      padding: 9px 14px; gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
     .srow:last-child { border-bottom: none; }
     .card.is-new .srow { border-bottom-color: var(--new-bdr); }
-    .sz { font-size: 11px; font-weight: 700; color: var(--text2); background: var(--bg); padding: 3px 7px; border-radius: 6px; min-width: 44px; text-align: center; flex-shrink: 0; }
-    .qty { font-size: 13px; font-weight: 700; color: var(--text); min-width: 52px; flex-shrink: 0; }
-    .qty em { font-size: 10px; font-style: normal; font-weight: 400; color: var(--text3); margin-left: 2px; }
-    .swatches { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; }
-    .sw { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; box-shadow: inset 0 0 0 1px rgba(0,0,0,.14); transition: transform .15s; flex-shrink: 0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-    .sw:hover { transform: scale(1.25); }
+
+    .sz {
+      font-size: 11px; font-weight: 700; color: var(--text2);
+      background: var(--bg); padding: 3px 7px;
+      border-radius: 6px; min-width: 44px;
+      text-align: center; flex-shrink: 0;
+    }
+    .qty {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      min-width: 52px; flex-shrink: 0;
+    }
+    .qty em {
+      font-size: 10px; font-style: normal;
+      font-weight: 400; color: var(--text3); margin-left: 2px;
+    }
+    .swatches {
+      display: flex; flex-wrap: wrap; gap: 5px; flex: 1;
+    }
+    .sw {
+      width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.14);
+      transition: transform .15s;
+      flex-shrink: 0;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .sw:hover  { transform: scale(1.25); }
     .sw:active { transform: scale(.9); }
-    .sw-tbd { width: 22px; height: 22px; border-radius: 50%; border: 1.5px dashed var(--text3); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text3); flex-shrink: 0; font-weight: 700; }
-    .tt { position: fixed; z-index: 300; background: #1a1a2e; border-radius: 12px; padding: 12px 14px; box-shadow: 0 8px 32px rgba(0,0,0,.28); min-width: 140px; display: none; pointer-events: none; }
+    .sw-tbd {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 1.5px dashed var(--text3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: var(--text3); flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    /* ── Tooltip ── */
+    .tt {
+      position: fixed; z-index: 300;
+      background: #1a1a2e;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.28);
+      min-width: 140px;
+      display: none;
+      pointer-events: none;
+    }
     .tt.on { display: block; pointer-events: auto; }
-    .tt-swatch { width: 36px; height: 36px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); margin-bottom: 8px; }
+    .tt-swatch {
+      width: 36px; height: 36px; border-radius: 8px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+      margin-bottom: 8px;
+    }
     .tt-name { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 3px; }
-    .tt-hex { font-size: 12px; color: var(--gold); font-family: 'SF Mono','Menlo',monospace; letter-spacing: .5px; }
-    .tt-hint { margin-top: 9px; font-size: 10px; color: rgba(255,255,255,.4); text-align: center; padding-top: 7px; border-top: 1px solid rgba(255,255,255,.08); }
+    .tt-hex  { font-size: 12px; color: var(--gold); font-family: 'SF Mono', 'Menlo', monospace; letter-spacing: .5px; }
+    .tt-hint {
+      margin-top: 9px; font-size: 10px; color: rgba(255,255,255,.4);
+      text-align: center; padding-top: 7px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
     .tt-hint.ok { color: #7ec98a; }
-    .ftr { background: var(--dark); padding: 24px 20px; padding-bottom: max(env(safe-area-inset-bottom), 24px); }
-    .ftr-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-    .totals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .tc { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.07); border-radius: 10px; padding: 14px; }
+
+    /* ── Footer ── */
+    .ftr {
+      background: var(--dark);
+      padding: 24px 20px;
+      padding-bottom: max(env(safe-area-inset-bottom), 24px);
+    }
+    .ftr-label {
+      font-size: 10px; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .totals {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .tc {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 10px; padding: 14px;
+    }
     .tc-lbl { font-size: 11px; color: rgba(255,255,255,.4); margin-bottom: 5px; }
-    .tc-val { font-size: 24px; font-weight: 700; color: #fff; letter-spacing: -.5px; }
+    .tc-val {
+      font-size: 24px; font-weight: 700; color: #fff; letter-spacing: -.5px;
+    }
     .tc-val span { font-size: 11px; font-weight: 400; color: var(--gold); margin-left: 2px; }
+    .grand {
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .grand-lbl { font-size: 13px; color: rgba(255,255,255,.55); }
+    .grand-val { font-size: 26px; font-weight: 700; color: var(--gold2); letter-spacing: -.5px; }
+
+    /* ── Desktop ── */
     @media (min-width: 700px) {
-      .hdr { padding: 20px 32px 16px; } .hdr-title { font-size: 19px; }
-      .content { padding: 24px 32px; } .ftr { padding: 28px 32px; padding-bottom: 32px; }
-      .card-head { padding: 13px 18px 11px; } .prod-name { font-size: 15px; }
+      .hdr { padding: 20px 32px 16px; }
+      .hdr-title { font-size: 19px; }
+      .content { padding: 24px 32px; }
+      .ftr { padding: 28px 32px; padding-bottom: 32px; }
+      .totals { grid-template-columns: repeat(4, 1fr); }
+      .card-head { padding: 13px 18px 11px; }
+      .prod-name { font-size: 15px; }
       .srow { padding: 10px 18px; gap: 14px; }
-      .sz { min-width: 52px; font-size: 12px; } .qty { font-size: 14px; min-width: 60px; }
+      .sz { min-width: 52px; font-size: 12px; }
+      .qty { font-size: 14px; min-width: 60px; }
       .sw, .sw-tbd { width: 24px; height: 24px; }
     }
   </style>
 </head>
 <body>
+
   <header class="hdr">
     <div class="hdr-brand">Roksolana</div>
     <div class="hdr-title">Заказ · Август 2026</div>
   </header>
+
   <nav class="tabs" id="tabs"></nav>
   <main class="content" id="content"></main>
   <footer class="ftr" id="ftr"></footer>
+
   <div class="tt" id="tt">
     <div class="tt-swatch" id="tt-sw"></div>
-    <div class="tt-name" id="tt-nm"></div>
-    <div class="tt-hex" id="tt-hx"></div>
-    <div class="tt-hint" id="tt-ht">нажмите чтобы скопировать</div>
+    <div class="tt-name"  id="tt-nm"></div>
+    <div class="tt-hex"   id="tt-hx"></div>
+    <div class="tt-hint"  id="tt-ht">нажмите чтобы скопировать</div>
   </div>
+
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
   const CATS = [
-    { id:'wool', name:'Шерсть', items:[
-      {p:'Dog Wool Socks',s:'L/XL',q:50,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#5C2030',t:'Бордовый'},{h:'#4A4A4A',t:'Тёмно-серый'}]},
-      {p:'Dog Wool Socks',s:'S/M',q:100,u:'dz',n:false,c:[{h:'#8C1530',t:'Тёмно-красный'},{h:'#2A6030',t:'Тёмно-зелёный'},{h:'#D43570',t:'Ярко-розовый'},{h:'#6B2D8B',t:'Фиолетовый'},{h:'#B8B8B8',t:'Светло-серый'}]},
-      {p:'Rabbit Wool Socks',s:'L/XL',q:50,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#3A1A0A',t:'Тёмный шоколад'},{h:'#7A3A18',t:'Коричневый'},{h:'#484848',t:'Тёмно-серый'}]},
-      {p:'Rabbit Wool Socks',s:'S/M',q:100,u:'dz',n:false,c:[{h:'#E05070',t:'Розовый'},{h:'#70C0B0',t:'Мятный'},{h:'#E8C0B0',t:'Пудровый'},{h:'#90C0E0',t:'Голубой'},{h:'#C8A8D8',t:'Лиловый'}]},
-      {p:'Yak Wool Socks',s:'L/XL',q:75,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#5A2E18',t:'Тёмно-коричневый'},{h:'#484848',t:'Тёмно-серый'}]},
-      {p:'Yak Wool Socks',s:'S/M',q:100,u:'dz',n:false,c:[{h:'#E87090',t:'Розовый'},{h:'#111111',t:'Чёрный'},{h:'#8A8A50',t:'Оливковый'},{h:'#D4C0A0',t:'Бежевый'},{h:'#F0C8D0',t:'Нежно-розовый'}]},
-      {p:'Alpaca Wool Socks',s:'L/XL',q:100,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#787878',t:'Серый'},{h:'#484848',t:'Тёмно-серый'}]},
-      {p:'Alpaca Wool Socks',s:'S/M',q:140,u:'dz',n:false,c:[{h:'#F0B0C0',t:'Нежно-розовый'},{h:'#90D0C0',t:'Мятный'},{h:'#D8C8A8',t:'Бежевый'},{h:'#A0C8E8',t:'Голубой'},{h:'#C8C8C8',t:'Светло-серый'},{h:'#C8A8D8',t:'Лавандовый'}]},
-      {p:'Bear Wool Socks',s:'L/XL',q:100,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#3A1A08',t:'Тёмный шоколад'},{h:'#7A4020',t:'Карамельный'},{h:'#383838',t:'Антрацит'}]},
-      {p:'Bear Wool Socks',s:'S/M',q:100,u:'dz',n:false,c:[{h:'#602898',t:'Фиолетовый'},{h:'#E05880',t:'Ярко-розовый'},{h:'#9A1828',t:'Тёмно-красный'},{h:'#111111',t:'Чёрный'},{h:'#808080',t:'Серый'},{h:'#1A5028',t:'Тёмно-зелёный'}]},
-      {p:'Mink Wool Socks',s:'L/XL',q:25,u:'dz',n:true,c:[]},{p:'Mink Wool Socks',s:'S/M',q:25,u:'dz',n:true,c:[]},
-      {p:'Camel Wool Socks',s:'L/XL',q:25,u:'dz',n:true,c:[]},{p:'Camel Wool Socks',s:'S/M',q:25,u:'dz',n:true,c:[]},
-      {p:'Bison Wool Socks',s:'L/XL',q:50,u:'dz',n:true,c:[]},{p:'Bison Wool Socks',s:'S/M',q:50,u:'dz',n:true,c:[]}
-    ]},
-    { id:'cotton', name:'Житомир', items:[
-      {p:'Zhytomyr Cotton',s:'L/XL',q:240,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#3A2010',t:'Тёмно-коричневый'},{h:'#2A6070',t:'Стальной'},{h:'#D0C090',t:'Бежевый'}]},
-      {p:'Zhytomyr Cotton',s:'S/M',q:60,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#F5F5F5',t:'Белый'},{h:'#C8C8C8',t:'Светло-серый'},{h:'#4A2810',t:'Тёмно-коричневый'}]}
-    ]},
-    { id:'diab', name:'Диабетические', items:[
-      {p:'Diabetic Mesh',s:'OneSize',q:50,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#907868',t:'Тёплый серый'},{h:'#D0C0A0',t:'Бежевый'}]},
-      {p:'Diabetic Cotton',s:'S/M',q:200,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#4880A0',t:'Стальной синий'},{h:'#907050',t:'Коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#D8C8A0',t:'Бежевый'},{h:'#C0C0C0',t:'Светло-серый'}]},
-      {p:'Diabetic Cotton',s:'M/L',q:400,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#4880A0',t:'Стальной синий'},{h:'#907050',t:'Коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#D8C8A0',t:'Бежевый'},{h:'#C0C0C0',t:'Светмо-серый'}]},
-      {p:'Diabetic Cotton',s:'L/XL',q:400,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#484848',t:'Тёмно-серый'},{h:'#4A2810',t:'Тёмно-коричневый'},{h:'#D8C8A0',t:'Бежевый'}]},
-      {p:'Diabetic Lavender',s:'S/M',q:50,u:'dz',n:false,c:[{h:'#A0B870',t:'Шалфей'},{h:'#C09870',t:'Светло-коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#80D0C0',t:'Мятный'},{h:'#90C8E8',t:'Голубой'}]},
-      {p:'Diabetic Lavender',s:'M/L',q:100,u:'dz',n:false,c:[{h:'#A0B870',t:'Шалфей'},{h:'#C09870',t:'Светло-коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#80D0C0',t:'Мятный'},{h:'#90C8E8',t:'Голубой'}]},
-      {p:'Diabetic Lavender',s:'L/XL',q:100,u:'dz',n:false,c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#484848',t:'Тёмно-серый'},{h:'#C8B890',t:'Бежевый'}]}
-    ]},
-    { id:'tights', name:'Колготки', items:[
-      {p:'Wool Tights',s:'M',q:120,u:'шт',n:true,c:[]},{p:'Wool Tights',s:'L',q:180,u:'шт',n:true,c:[]},
-      {p:'Wool Tights',s:'XL',q:250,u:'шт',n:true,c:[]},{p:'Wool Tights',s:'2XL',q:250,u:'шт',n:true,c:[]},
-      {p:'Wool Tights',s:'3XL',q:250,u:'шт',n:true,c:[]},{p:'Wool Tights',s:'4XL',q:250,u:'шт',n:true,c:[]},
-      {p:'Bamboo Tights',s:'M',q:30,u:'шт',n:true,c:[]},{p:'Bamboo Tights',s:'L',q:50,u:'шт',n:true,c:[]},
-      {p:'Bamboo Tights',s:'XL',q:80,u:'шт',n:true,c:[]},{p:'Bamboo Tights',s:'2XL',q:80,u:'шт',n:true,c:[]},
-      {p:'Bamboo Tights',s:'3XL',q:80,u:'шт',n:true,c:[]},{p:'Bamboo Tights',s:'4XL',q:80,u:'шт',n:true,c:[]}
-    ]}
+    {
+      id: 'wool', name: 'Шерсть',
+      items: [
+        { p:'Dog Wool Socks',    s:'L/XL', q:50,  u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#4A4A4A',t:'Тёмно-серый'}] },
+        { p:'Dog Wool Socks',    s:'S/M',  q:100, u:'dz', n:false, c:[{h:'#2A6030',t:'Тёмно-зелёный'},{h:'#6B2D8B',t:'Фиолетовый'},{h:'#B8B8B8',t:'Светло-серый'}] },
+        { p:'Rabbit Wool Socks', s:'L/XL', q:50,  u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#3A1A0A',t:'Тёмный шоколад'},{h:'#7A3A18',t:'Коричневый'},{h:'#484848',t:'Тёмно-серый'}] },
+        { p:'Rabbit Wool Socks', s:'S/M',  q:100, u:'dz', n:false, c:[{h:'#70C0B0',t:'Мятный'},{h:'#90C0E0',t:'Голубой'},{h:'#C8A8D8',t:'Лиловый'}] },
+        { p:'Yak Wool Socks',    s:'L/XL', q:75,  u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#5A2E18',t:'Тёмно-коричневый'},{h:'#484848',t:'Тёмно-серый'}] },
+        { p:'Yak Wool Socks',    s:'S/M',  q:100, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#8A8A50',t:'Оливковый'},{h:'#D4C0A0',t:'Бежевый'}] },
+        { p:'Alpaca Wool Socks', s:'L/XL', q:100, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#787878',t:'Серый'},{h:'#484848',t:'Тёмно-серый'}] },
+        { p:'Alpaca Wool Socks', s:'S/M',  q:140, u:'dz', n:false, c:[{h:'#90D0C0',t:'Мятный'},{h:'#D8C8A8',t:'Бежевый'},{h:'#A0C8E8',t:'Голубой'},{h:'#C8C8C8',t:'Светло-серый'},{h:'#C8A8D8',t:'Лавандовый'}] },
+        { p:'Bear Wool Socks',   s:'L/XL', q:100, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#3A1A08',t:'Тёмный шоколад'},{h:'#7A4020',t:'Карамельный'},{h:'#383838',t:'Антрацит'}] },
+        { p:'Bear Wool Socks',   s:'S/M',  q:100, u:'dz', n:false, c:[{h:'#602898',t:'Фиолетовый'},{h:'#111111',t:'Чёрный'},{h:'#808080',t:'Серый'},{h:'#1A5028',t:'Тёмно-зелёный'}] },
+        { p:'Mink Wool Socks',   s:'L/XL', q:25,  u:'dz', n:true,  c:[] },
+        { p:'Mink Wool Socks',   s:'S/M',  q:25,  u:'dz', n:true,  c:[] },
+        { p:'Camel Wool Socks',  s:'L/XL', q:25,  u:'dz', n:true,  c:[] },
+        { p:'Camel Wool Socks',  s:'S/M',  q:25,  u:'dz', n:true,  c:[] },
+        { p:'Bison Wool Socks',  s:'L/XL', q:50,  u:'dz', n:true,  c:[] },
+        { p:'Bison Wool Socks',  s:'S/M',  q:50,  u:'dz', n:true,  c:[] },
+      ]
+    },
+    {
+      id: 'cotton', name: 'Житомир',
+      items: [
+        { p:'Zhytomyr Cotton', s:'L/XL', q:240, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#3A2010',t:'Тёмно-коричневый'},{h:'#2A6070',t:'Стальной'},{h:'#D0C090',t:'Бежевый'}] },
+        { p:'Zhytomyr Cotton', s:'S/M',  q:60,  u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#F5F5F5',t:'Белый'},{h:'#C8C8C8',t:'Светло-серый'},{h:'#4A2810',t:'Тёмно-коричневый'}] },
+      ]
+    },
+    {
+      id: 'diab', name: 'Диабетические',
+      items: [
+        { p:'Diabetic Mesh',    s:'OneSize', q:50,  u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#907868',t:'Тёплый серый'},{h:'#D0C0A0',t:'Бежевый'}] },
+        { p:'Diabetic Cotton',  s:'S/M',     q:200, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#4880A0',t:'Стальной синий'},{h:'#907050',t:'Коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#D8C8A0',t:'Бежевый'},{h:'#C0C0C0',t:'Светло-серый'}] },
+        { p:'Diabetic Cotton',  s:'M/L',     q:400, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#4880A0',t:'Стальной синий'},{h:'#907050',t:'Коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#D8C8A0',t:'Бежевый'},{h:'#C0C0C0',t:'Светло-серый'}] },
+        { p:'Diabetic Cotton',  s:'L/XL',    q:400, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#484848',t:'Тёмно-серый'},{h:'#4A2810',t:'Тёмно-коричневый'},{h:'#D8C8A0',t:'Бежевый'}] },
+        { p:'Diabetic Cotton · Чёрный', s:'S/M',  q:50,  u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'}] },
+        { p:'Diabetic Cotton · Чёрный', s:'M/L',  q:100, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'}] },
+        { p:'Diabetic Cotton · Чёрный', s:'L/XL', q:100, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'}] },
+        { p:'Diabetic Lavender',s:'S/M',     q:50,  u:'dz', n:false, c:[{h:'#A0B870',t:'Шалфей'},{h:'#C09870',t:'Светло-коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#80D0C0',t:'Мятный'},{h:'#90C8E8',t:'Голубой'}] },
+        { p:'Diabetic Lavender',s:'M/L',     q:100, u:'dz', n:false, c:[{h:'#A0B870',t:'Шалфей'},{h:'#C09870',t:'Светло-коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#80D0C0',t:'Мятный'},{h:'#90C8E8',t:'Голубой'}] },
+        { p:'Diabetic Lavender',s:'L/XL',    q:100, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#1B2A4A',t:'Тёмно-синий'},{h:'#484848',t:'Тёмно-серый'},{h:'#C8B890',t:'Бежевый'}] },
+      ]
+    },
+    {
+      id: 'tights', name: 'Колготки',
+      items: [
+        { p:'Wool Tights',   s:'M',   q:120, u:'шт', n:true, c:[] },
+        { p:'Wool Tights',   s:'L',   q:180, u:'шт', n:true, c:[] },
+        { p:'Wool Tights',   s:'XL',  q:250, u:'шт', n:true, c:[] },
+        { p:'Wool Tights',   s:'2XL', q:250, u:'шт', n:true, c:[] },
+        { p:'Wool Tights',   s:'3XL', q:250, u:'шт', n:true, c:[] },
+        { p:'Wool Tights',   s:'4XL', q:250, u:'шт', n:true, c:[] },
+        { p:'Bamboo Tights', s:'M',   q:30,  u:'шт', n:true, c:[] },
+        { p:'Bamboo Tights', s:'L',   q:50,  u:'шт', n:true, c:[] },
+        { p:'Bamboo Tights', s:'XL',  q:80,  u:'шт', n:true, c:[] },
+        { p:'Bamboo Tights', s:'2XL', q:80,  u:'шт', n:true, c:[] },
+        { p:'Bamboo Tights', s:'3XL', q:80,  u:'шт', n:true, c:[] },
+        { p:'Bamboo Tights', s:'4XL', q:80,  u:'шт', n:true, c:[] },
+      ]
+    }
   ];
 
-  function groupBy(items){const m=new Map();items.forEach(r=>{if(!m.has(r.p))m.set(r.p,{p:r.p,n:r.n,rows:[]});m.get(r.p).rows.push(r);});return[...m.values()];}
-  function swatchesHTML(c){if(!c.length)return'<span class="sw-tbd">?</span>';return c.map(x=>`<span class="sw" style="background:${x.h}" data-h="${x.h}" data-t="${x.t}"></span>`).join('');}
-  function buildSection(cat){const g=groupBy(cat.items);let h=`<div class="section" id="s-${cat.id}">`;g.forEach(x=>{h+=`<div class="card${x.n?' is-new':''}"><div class="card-head"><span class="prod-name">${x.p}</span>${x.n?'<span class="badge-new">❆ Новинка</span>':''}</div>`;x.rows.forEach(r=>{h+=`<div class="srow"><span class="sz">${r.s}</span><span class="qty">${r.q}<em>${r.u}</em></span><div class="swatches">${swatchesHTML(r.c)}</div></div>`;});h+='</div>';});return h+'</div>';}
-
-  $(function(){
-    const $tb=$('#tabs'),$ct=$('#content');
-    CATS.forEach((cat,i)=>{
-      const u=new Set(cat.items.map(r=>r.p)).size;
-      $tb.append(`<div class="tab${i===0?' active':''}" data-id="${cat.id}">${cat.name}<span class="cnt">${u}</span></div>`);
-      const $s=$(buildSection(cat)); if(i===0)$s.addClass('active'); $ct.append($s);
+  function groupBy(items) {
+    const map = new Map();
+    items.forEach(r => {
+      if (!map.has(r.p)) map.set(r.p, { p: r.p, n: r.n, rows: [] });
+      map.get(r.p).rows.push(r);
     });
-    const hH=$('.hdr').outerHeight(); $('.tabs').css('top',hH);
+    return [...map.values()];
+  }
 
-    function renderFooter(catId){
-      const cat=CATS.find(c=>c.id===catId);
-      const total=cat.items.reduce((s,r)=>s+r.q,0);
-      const unit=cat.items[0]?.u||'dz';
-      const prods=new Set(cat.items.map(r=>r.p)).size;
-      $('#ftr').html(`<div class="ftr-label">Итого · ${cat.name}</div><div class="totals" style="grid-template-columns:1fr 1fr"><div class="tc"><div class="tc-lbl">Количество</div><div class="tc-val">${total}<span>${unit}</span></div></div><div class="tc"><div class="tc-lbl">Наименований</div><div class="tc-val">${prods}</div></div></div>`);
+  function swatchesHTML(colors) {
+    if (!colors.length) return '<span class="sw-tbd">?</span>';
+    return colors.map(c =>
+      `<span class="sw" style="background:${c.h}" data-h="${c.h}" data-t="${c.t}"></span>`
+    ).join('');
+  }
+
+  function buildSection(cat) {
+    const groups = groupBy(cat.items);
+    let h = `<div class="section" id="s-${cat.id}">`;
+    groups.forEach(g => {
+      h += `<div class="card${g.n ? ' is-new' : ''}">`;
+      h += `<div class="card-head"><span class="prod-name">${g.p}</span>${g.n ? '<span class="badge-new">✦ Новинка</span>' : ''}</div>`;
+      g.rows.forEach(r => {
+        h += `<div class="srow">
+          <span class="sz">${r.s}</span>
+          <span class="qty">${r.q}<em>${r.u}</em></span>
+          <div class="swatches">${swatchesHTML(r.c)}</div>
+        </div>`;
+      });
+      h += '</div>';
+    });
+    return h + '</div>';
+  }
+
+  $(function () {
+    const $tabs = $('#tabs'), $content = $('#content');
+
+    // Tabs + sections
+    CATS.forEach((cat, i) => {
+      const unique = new Set(cat.items.map(r => r.p)).size;
+      $tabs.append(
+        `<div class="tab${i===0?' active':''}" data-id="${cat.id}">${cat.name}<span class="cnt">${unique}</span></div>`
+      );
+      const $sec = $(buildSection(cat));
+      if (i === 0) $sec.addClass('active');
+      $content.append($sec);
+    });
+
+    // Sticky tabs offset
+    const hdrH = $('.hdr').outerHeight();
+    $('.tabs').css('top', hdrH);
+
+    // Tab switch
+    $tabs.on('click', '.tab', function () {
+      const id = $(this).data('id');
+      $('.tab').removeClass('active');
+      $(this).addClass('active');
+      $('.section').removeClass('active');
+      $(`#s-${id}`).addClass('active');
+      hideTooltip();
+      renderFooter(id);
+      window.scrollTo({ top: hdrH + $('.tabs').outerHeight(), behavior: 'smooth' });
+    });
+
+    // Footer — контекстный итог для активного таба
+    function renderFooter(catId) {
+      const cat = CATS.find(c => c.id === catId);
+      const total = cat.items.reduce((s, r) => s + r.q, 0);
+      const unit  = cat.items[0]?.u || 'dz';
+      const prods = new Set(cat.items.map(r => r.p)).size;
+      $('#ftr').html(`
+        <div class="ftr-label">Итого · ${cat.name}</div>
+        <div class="totals" style="grid-template-columns:1fr 1fr">
+          <div class="tc">
+            <div class="tc-lbl">Количество</div>
+            <div class="tc-val">${total}<span>${unit}</span></div>
+          </div>
+          <div class="tc">
+            <div class="tc-lbl">Наименований</div>
+            <div class="tc-val">${prods}</div>
+          </div>
+        </div>
+      `);
     }
     renderFooter(CATS[0].id);
 
-    $tb.on('click','.tab',function(){const id=$(this).data('id');$('.tab').removeClass('active');$(this).addClass('active');$('.section').removeClass('active');$(`#s-${id}`).addClass('active');hide();renderFooter(id);window.scrollTo({top:hH+$('.tabs').outerHeight(),behavior:'smooth'});});
+    // Tooltip
+    const $tt = $('#tt'), $sw = $('#tt-sw'), $nm = $('#tt-nm'), $hx = $('#tt-hx'), $ht = $('#tt-ht');
+    let $active = null;
 
-    const $tt=$('#tt'),$tsw=$('#tt-sw'),$tnm=$('#tt-nm'),$thx=$('#tt-hx'),$tht=$('#tt-ht');
-    let $a=null;
-    function show($el){const hex=$el.data('h'),name=$el.data('t');$tsw.css('background',hex);$tnm.text(name);$thx.text(hex.toUpperCase());$tht.text('нажмите чтобы скопировать').removeClass('ok');$tt.addClass('on');$a=$el;const r=$el[0].getBoundingClientRect(),tw=$tt.outerWidth(),th=$tt.outerHeight(),vw=window.innerWidth;let l=r.left+r.width/2-tw/2,t=r.top-th-10;if(t<8)t=r.bottom+10;if(l<8)l=8;if(l+tw>vw-8)l=vw-tw-8;$tt.css({left:l,top:t});}
-    function hide(){$tt.removeClass('on');$a=null;}
-    $(document).on('click','.sw',function(e){e.stopPropagation();if($a&&$a.is(this)){hide();return;}show($(this));});
-    $tt.on('click',function(){const hex=$thx.text();if(navigator.clipboard){navigator.clipboard.writeText(hex).then(()=>{$tht.text('Скопировано ✓').addClass('ok');setTimeout(hide,900);});}else{hide();}});
-    $(document).on('click',function(e){if(!$(e.target).hasClass('sw')&&!$tt.is(e.target)&&!$tt.has(e.target).length)hide();});
+    function showTT($el) {
+      const hex = $el.data('h'), name = $el.data('t');
+      $sw.css('background', hex);
+      $nm.text(name);
+      $hx.text(hex.toUpperCase());
+      $ht.text('нажмите чтобы скопировать').removeClass('ok');
+      $tt.addClass('on');
+      $active = $el;
+
+      const r = $el[0].getBoundingClientRect();
+      const tw = $tt.outerWidth(), th = $tt.outerHeight();
+      const vw = window.innerWidth, vh = window.innerHeight;
+      let left = r.left + r.width / 2 - tw / 2;
+      let top  = r.top - th - 10;
+      if (top < 8) top = r.bottom + 10;
+      if (left < 8) left = 8;
+      if (left + tw > vw - 8) left = vw - tw - 8;
+      $tt.css({ left, top });
+    }
+
+    function hideTooltip() { $tt.removeClass('on'); $active = null; }
+
+    $(document).on('click', '.sw', function (e) {
+      e.stopPropagation();
+      if ($active && $active.is(this)) { hideTooltip(); return; }
+      showTT($(this));
+    });
+
+    $tt.on('click', function () {
+      const hex = $hx.text();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(hex).then(() => {
+          $ht.text('Скопировано ✓').addClass('ok');
+          setTimeout(hideTooltip, 900);
+        });
+      } else { hideTooltip(); }
+    });
+
+    $(document).on('click', function (e) {
+      if (!$(e.target).hasClass('sw') && !$tt.is(e.target) && !$tt.has(e.target).length) {
+        hideTooltip();
+      }
+    });
   });
   </script>
 </body>
