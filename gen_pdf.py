@@ -148,6 +148,7 @@ def build_pdf(path):
     col_w = [W*0.38, W*0.10, W*0.12, W*0.40]
 
     cat_style  = ParagraphStyle("cat",  fontName="Helvetica-Bold", fontSize=9,   textColor=GOLD,  letterSpacing=2, leading=14)
+    hdr_style  = ParagraphStyle("hdr",  fontName="Helvetica-Bold", fontSize=7,   textColor=TEXT3, letterSpacing=1, leading=10)
     prod_style = ParagraphStyle("prod", fontName="Helvetica-Bold", fontSize=8.5, textColor=TEXT,  leading=12)
     sz_style   = ParagraphStyle("sz",   fontName="Helvetica-Bold", fontSize=8,   textColor=TEXT2, leading=12)
     qty_style  = ParagraphStyle("qty",  fontName="Helvetica-Bold", fontSize=9,   textColor=TEXT,  leading=12)
@@ -162,6 +163,21 @@ def build_pdf(path):
             ("LEFTPADDING",  (0,0), (-1,-1), 6),
         ]))
         story.append(cat_row)
+
+        col_hdr = Table([[
+            "",
+            Paragraph("SIZE",     hdr_style),
+            Paragraph("QTY",      hdr_style),
+            Paragraph("COLORS",   hdr_style),
+        ]], colWidths=col_w)
+        col_hdr.setStyle(TableStyle([
+            ("BACKGROUND",   (0,0), (-1,-1), colors.HexColor("#F0F0F5")),
+            ("TOPPADDING",   (0,0), (-1,-1), 3),
+            ("BOTTOMPADDING",(0,0), (-1,-1), 3),
+            ("LEFTPADDING",  (0,0), (-1,-1), 6),
+            ("LINEBELOW",    (0,0), (-1,-1), 0.5, BORDER),
+        ]))
+        story.append(col_hdr)
 
         grouped = {}
         for r in cat["items"]:
