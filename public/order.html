@@ -239,8 +239,47 @@
     .grand-lbl { font-size: 13px; color: rgba(255,255,255,.55); }
     .grand-val { font-size: 26px; font-weight: 700; color: var(--gold2); letter-spacing: -.5px; }
 
+    /* ── All tab ── */
+    .all-section-title {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--text2); margin: 20px 0 10px;
+    }
+    .all-totals-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .all-total-card {
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 14px;
+    }
+    .atc-lbl { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+    .atc-val { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -.4px; }
+    .atc-val span { font-size: 10px; font-weight: 400; color: var(--text3); margin-left: 2px; }
+    .all-color-group {
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 12px 14px; margin-bottom: 8px;
+    }
+    .acg-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .acg-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+    .acg-row:last-child { border-bottom: none; }
+    .acg-name { font-size: 12px; color: var(--text); flex: 1; }
+    .acg-qty { font-size: 13px; font-weight: 700; color: var(--text); }
+    .acg-qty em { font-size: 10px; font-style: normal; font-weight: 400; color: var(--text3); margin-left: 2px; }
+    .all-table-wrap { border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .all-table { width: 100%; border-collapse: collapse; background: var(--white); }
+    .all-table th {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--text2); padding: 9px 12px; background: var(--bg);
+      text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .all-table td { font-size: 12px; padding: 7px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .all-table tr:last-child td { border-bottom: none; }
+    .atr-cat td { background: var(--dark); color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 5px 12px; }
+    .at-qty { font-weight: 700; }
+    .at-unit { font-size: 10px; color: var(--text3); margin-left: 2px; }
+
     /* ── Desktop ── */
     @media (min-width: 700px) {
+      .all-totals-grid { grid-template-columns: repeat(5, 1fr); }
       .hdr { padding: 20px 32px 16px; }
       .hdr-title { font-size: 19px; }
       .content { padding: 24px 32px; }
@@ -347,6 +386,92 @@
     return [...map.values()];
   }
 
+  function colorStats(items) {
+    const map = new Map();
+    const notes = [];
+    items.forEach(r => {
+      if (r.note) { notes.push(r); return; }
+      r.c.forEach(c => {
+        if (!map.has(c.h)) map.set(c.h, {t: c.t, qty: 0, u: r.u});
+        map.get(c.h).qty += r.q;
+      });
+    });
+    return {
+      colors: [...map.entries()].map(([h, v]) => ({h, ...v})).sort((a, b) => b.qty - a.qty),
+      notes
+    };
+  }
+
+  function buildAllSection() {
+    const wool   = CATS.find(c => c.id === 'wool').items;
+    const cotton = CATS.find(c => c.id === 'cotton').items;
+    const diab   = CATS.find(c => c.id === 'diab').items;
+    const allT   = CATS.find(c => c.id === 'tights').items;
+    const woolT  = allT.filter(r => r.p === 'Wool Tights');
+    const bambT  = allT.filter(r => r.p === 'Bamboo Tights');
+    const sum = arr => arr.reduce((s, r) => s + r.q, 0);
+
+    let h = '<div class="section" id="s-all">';
+
+    // 1. Category totals
+    h += `<div class="all-section-title" style="margin-top:0">Итого по категориям</div>
+    <div class="all-totals-grid">
+      <div class="all-total-card"><div class="atc-lbl">Шерстяные носки</div><div class="atc-val">${sum(wool)}<span>dz</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">Диабетические</div><div class="atc-val">${sum(diab)}<span>dz</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">Носки Житомир</div><div class="atc-val">${sum(cotton)}<span>dz</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">Колготки Шерсть</div><div class="atc-val">${sum(woolT)}<span>шт</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">Колготки Бамбук</div><div class="atc-val">${sum(bambT)}<span>шт</span></div></div>
+    </div>`;
+
+    // 2. Color breakdown per group
+    const groups = [
+      {label: 'Шерстяные носки', items: wool, unit: 'dz'},
+      {label: 'Диабетические', items: diab, unit: 'dz'},
+      {label: 'Носки Житомир', items: cotton, unit: 'dz'},
+      {label: 'Колготки Шерсть', items: woolT, unit: 'шт'},
+      {label: 'Колготки Бамбук', items: bambT, unit: 'шт'},
+    ];
+    h += `<div class="all-section-title">Цвета по категориям</div>`;
+    groups.forEach(({label, items, unit}) => {
+      const {colors, notes} = colorStats(items);
+      h += `<div class="all-color-group"><div class="acg-title">${label}</div>`;
+      colors.forEach(c => {
+        h += `<div class="acg-row">
+          <span class="sw" style="background:${c.h}" data-h="${c.h}" data-t="${c.t}"></span>
+          <span class="acg-name">${c.t}</span>
+          <span class="acg-qty">${c.qty}<em>${unit}</em></span>
+        </div>`;
+      });
+      notes.forEach(r => {
+        h += `<div class="acg-row">
+          <span class="sw-tbd">?</span>
+          <span class="acg-name" style="font-style:italic;color:var(--text2)">${r.p} · ${r.s} — По предыдущему заказу</span>
+          <span class="acg-qty">${r.q}<em>${r.u}</em></span>
+        </div>`;
+      });
+      h += '</div>';
+    });
+
+    // 3. Detailed table
+    h += `<div class="all-section-title">Детально · весь заказ</div>
+    <div class="all-table-wrap"><table class="all-table">
+      <thead><tr><th>Продукт</th><th>Размер</th><th>Кол-во</th><th>Цвета</th></tr></thead>
+      <tbody>`;
+    CATS.forEach(cat => {
+      h += `<tr class="atr-cat"><td colspan="4">${cat.name}</td></tr>`;
+      cat.items.forEach(r => {
+        h += `<tr>
+          <td>${r.p}</td>
+          <td><span class="sz" style="min-width:auto">${r.s}</span></td>
+          <td><span class="at-qty">${r.q}</span><span class="at-unit">${r.u}</span></td>
+          <td><div class="swatches">${swatchesHTML(r)}</div></td>
+        </tr>`;
+      });
+    });
+    h += '</tbody></table></div></div>';
+    return h;
+  }
+
   function swatchesHTML(row) {
     if (row.note) return `<span class="sw-note">${row.note}</span>`;
     if (!row.c.length) return '<span class="sw-tbd">?</span>';
@@ -376,15 +501,16 @@
   $(function () {
     const $tabs = $('#tabs'), $content = $('#content');
 
-    // Tabs + sections
-    CATS.forEach((cat, i) => {
+    // "Все" tab
+    const totalProds = CATS.reduce((s, c) => s + new Set(c.items.map(r => r.p)).size, 0);
+    $tabs.append(`<div class="tab active" data-id="all">Все<span class="cnt">${totalProds}</span></div>`);
+    $content.append($(buildAllSection()).addClass('active'));
+
+    // Category tabs + sections
+    CATS.forEach(cat => {
       const unique = new Set(cat.items.map(r => r.p)).size;
-      $tabs.append(
-        `<div class="tab${i===0?' active':''}" data-id="${cat.id}">${cat.name}<span class="cnt">${unique}</span></div>`
-      );
-      const $sec = $(buildSection(cat));
-      if (i === 0) $sec.addClass('active');
-      $content.append($sec);
+      $tabs.append(`<div class="tab" data-id="${cat.id}">${cat.name}<span class="cnt">${unique}</span></div>`);
+      $content.append($(buildSection(cat)));
     });
 
     // Sticky tabs offset
@@ -403,8 +529,20 @@
       window.scrollTo({ top: hdrH + $('.tabs').outerHeight(), behavior: 'smooth' });
     });
 
-    // Footer — контекстный итог для активного таба
+    // Footer
     function renderFooter(catId) {
+      if (catId === 'all') {
+        const pos   = CATS.reduce((s, c) => s + c.items.length, 0);
+        const prods = CATS.reduce((s, c) => s + new Set(c.items.map(r => r.p)).size, 0);
+        $('#ftr').html(`
+          <div class="ftr-label">Итого · Весь заказ</div>
+          <div class="totals" style="grid-template-columns:1fr 1fr">
+            <div class="tc"><div class="tc-lbl">Позиций</div><div class="tc-val">${pos}</div></div>
+            <div class="tc"><div class="tc-lbl">Продуктов</div><div class="tc-val">${prods}</div></div>
+          </div>
+        `);
+        return;
+      }
       const cat = CATS.find(c => c.id === catId);
       const total = cat.items.reduce((s, r) => s + r.q, 0);
       const unit  = cat.items[0]?.u || 'dz';
@@ -423,7 +561,7 @@
         </div>
       `);
     }
-    renderFooter(CATS[0].id);
+    renderFooter('all');
 
     // Tooltip
     const $tt = $('#tt'), $sw = $('#tt-sw'), $nm = $('#tt-nm'), $hx = $('#tt-hx'), $ht = $('#tt-ht');
