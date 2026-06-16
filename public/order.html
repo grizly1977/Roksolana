@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Заказ Август 2026 — Roksolana</title>
+  <title>Sipariş Ağustos 2026 — Roksolana</title>
   <style>
     :root {
       --dark:      #070710;
@@ -39,6 +39,7 @@
       padding-top: max(env(safe-area-inset-top), 18px);
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; row-gap: 10px;
     }
     .hdr-left { display: flex; flex-direction: column; }
     .hdr-brand {
@@ -50,6 +51,22 @@
       font-size: 17px; font-weight: 700;
       color: #fff; letter-spacing: -.3px;
     }
+    .hdr-right { display: flex; align-items: center; gap: 10px; }
+    .lang-switch {
+      display: flex;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .lang-btn {
+      font-family: inherit; font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,.55); background: transparent; border: none;
+      padding: 7px 10px; cursor: pointer; white-space: nowrap;
+      transition: background .2s, color .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lang-btn.active { background: rgba(212,168,83,.18); color: var(--gold2); }
     .hdr-pdf {
       display: flex; align-items: center; gap: 6px;
       padding: 8px 14px; border-radius: 8px;
@@ -62,6 +79,10 @@
     }
     .hdr-pdf:hover { background: rgba(212,168,83,.25); border-color: var(--gold); }
     .hdr-pdf svg { flex-shrink: 0; }
+
+    @media (max-width: 380px) {
+      .hdr-right { width: 100%; justify-content: space-between; }
+    }
 
     /* ── Print ── */
     @media print {
@@ -323,16 +344,22 @@
   <header class="hdr">
     <div class="hdr-left">
       <div class="hdr-brand">Roksolana</div>
-      <div class="hdr-title">Заказ · Август 2026</div>
+      <div class="hdr-title" id="hdrTitle">Sipariş · Ağustos 2026</div>
     </div>
-    <button class="hdr-pdf" onclick="window.print()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      PDF
-    </button>
+    <div class="hdr-right">
+      <div class="lang-switch" id="langSwitch">
+        <button class="lang-btn" data-lang="ru">🇷🇺 RU</button>
+        <button class="lang-btn" data-lang="tr">🇹🇷 TR</button>
+      </div>
+      <button class="hdr-pdf" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        PDF
+      </button>
+    </div>
   </header>
 
   <nav class="tabs" id="tabs"></nav>
@@ -343,79 +370,154 @@
     <div class="tt-swatch" id="tt-sw"></div>
     <div class="tt-name"  id="tt-nm"></div>
     <div class="tt-hex"   id="tt-hx"></div>
-    <div class="tt-hint"  id="tt-ht">нажмите чтобы скопировать</div>
+    <div class="tt-hint"  id="tt-ht"></div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
+  const STRINGS = {
+    ru: {
+      docTitle: 'Заказ Август 2026 — Roksolana',
+      headerTitle: 'Заказ · Август 2026',
+      tabAll: 'Все',
+      catNames: { wool: 'Шерсть', cotton: 'Житомир', diab: 'Диабетические', tights: 'Колготки' },
+      sectionCatTotals: 'Итого по категориям',
+      groupLabels: { wool: 'Шерстяные носки', diab: 'Диабетические', cotton: 'Носки Житомир', woolTights: 'Колготки Шерсть', bambTights: 'Колготки Бамбук' },
+      sectionColorsByCat: 'Цвета по категориям',
+      prevOrder: 'По предыдущему заказу',
+      sectionDetailed: 'Детально · весь заказ',
+      thProduct: 'Продукт', thSize: 'Размер', thQty: 'Кол-во', thColors: 'Цвета',
+      badgeNew: '✦ Новинка',
+      ftrAllTitle: 'Итого · Весь заказ',
+      lblPositions: 'Позиций', lblProducts: 'Продуктов',
+      ftrCatTitlePrefix: 'Итого · ',
+      lblQty: 'Количество', lblNames: 'Наименований',
+      ttHint: 'нажмите чтобы скопировать', ttCopied: 'Скопировано ✓',
+      variantBlack: 'Чёрный',
+    },
+    tr: {
+      docTitle: 'Sipariş Ağustos 2026 — Roksolana',
+      headerTitle: 'Sipariş · Ağustos 2026',
+      tabAll: 'Tümü',
+      catNames: { wool: 'Yün', cotton: 'Jitomir', diab: 'Diyabetik', tights: 'Tayt' },
+      sectionCatTotals: 'Kategoriye Göre Toplam',
+      groupLabels: { wool: 'Yün Çoraplar', diab: 'Diyabetik', cotton: 'Jitomir Çorap', woolTights: 'Yün Tayt', bambTights: 'Bambu Tayt' },
+      sectionColorsByCat: 'Kategoriye Göre Renkler',
+      prevOrder: 'Önceki siparişe göre',
+      sectionDetailed: 'Detaylı · Tüm Sipariş',
+      thProduct: 'Ürün', thSize: 'Beden', thQty: 'Adet', thColors: 'Renkler',
+      badgeNew: '✦ Yeni',
+      ftrAllTitle: 'Toplam · Tüm Sipariş',
+      lblPositions: 'Kalem', lblProducts: 'Ürün',
+      ftrCatTitlePrefix: 'Toplam · ',
+      lblQty: 'Adet', lblNames: 'Ürün Çeşidi',
+      ttHint: 'kopyalamak için dokun', ttCopied: 'Kopyalandı ✓',
+      variantBlack: 'Siyah',
+    }
+  };
+
+  const COLOR_NAMES = {
+    processBlack:  { ru: 'Process Black',  tr: 'Process Black' },
+    pantone655:    { ru: 'Pantone 655',     tr: 'Pantone 655' },
+    pantone7540:   { ru: 'Pantone 7540',    tr: 'Pantone 7540' },
+    pantone7546:   { ru: 'Pantone 7546',    tr: 'Pantone 7546' },
+    pantone2695:   { ru: 'Pantone 2695',    tr: 'Pantone 2695' },
+    classicWhite:  { ru: 'Classic White',   tr: 'Classic White' },
+    jetBlack:      { ru: 'Jet Black',       tr: 'Jet Black' },
+    greyHeather:   { ru: 'Grey Heather',    tr: 'Grey Heather' },
+    sageGreen:     { ru: 'Sage Green',      tr: 'Sage Green' },
+    softLavender:  { ru: 'Soft Lavender',   tr: 'Soft Lavender' },
+    mint:          { ru: 'Mint',            tr: 'Mint' },
+    black:         { ru: 'Чёрный',          tr: 'Siyah' },
+    steelBlue:     { ru: 'Стальной синий',  tr: 'Çelik Mavisi' },
+    brown:         { ru: 'Коричневый',      tr: 'Kahverengi' },
+    white:         { ru: 'Белый',           tr: 'Beyaz' },
+    beige:         { ru: 'Бежевый',         tr: 'Bej' },
+    lightGrey:     { ru: 'Светло-серый',    tr: 'Açık Gri' },
+  };
+
+  const UNIT_LABELS = {
+    dz:  { ru: 'dz',  tr: 'dz' },
+    pcs: { ru: 'шт',  tr: 'adet' },
+  };
+
+  let lang = localStorage.getItem('roksolana_lang') || 'tr';
+
+  const COLORS_LXL = [{h:'#231F20',k:'processBlack'},{h:'#1C2C5F',k:'pantone655'},{h:'#717073',k:'pantone7540'},{h:'#4A5769',k:'pantone7546'}];
+  const COLORS_SM  = [{h:'#FFFFFF',k:'classicWhite'},{h:'#0A0A0A',k:'jetBlack'},{h:'#9E9E9E',k:'greyHeather'},{h:'#879884',k:'sageGreen'},{h:'#E6E6FA',k:'softLavender'},{h:'#AAF0D1',k:'mint'}];
+
   const CATS = [
     {
-      id: 'wool', name: 'Шерсть',
+      id: 'wool',
       items: [
-        { p:'Dog Wool Socks',    s:'L/XL', q:50,  u:'dz', n:false, c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Dog Wool Socks',    s:'S/M',  q:100, u:'dz', n:false, c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Rabbit Wool Socks', s:'L/XL', q:50,  u:'dz', n:false, c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Rabbit Wool Socks', s:'S/M',  q:100, u:'dz', n:false, c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Yak Wool Socks',    s:'L/XL', q:75,  u:'dz', n:false, c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Yak Wool Socks',    s:'S/M',  q:100, u:'dz', n:false, c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Alpaca Wool Socks', s:'L/XL', q:100, u:'dz', n:false, c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Alpaca Wool Socks', s:'S/M',  q:140, u:'dz', n:false, c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Bear Wool Socks',   s:'L/XL', q:100, u:'dz', n:false, c:[], note:'По предыдущему заказу' },
-        { p:'Bear Wool Socks',   s:'S/M',  q:100, u:'dz', n:false, c:[], note:'По предыдущему заказу' },
-        { p:'Mink Wool Socks',   s:'L/XL', q:25,  u:'dz', n:true,  c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Mink Wool Socks',   s:'S/M',  q:25,  u:'dz', n:true,  c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Camel Wool Socks',  s:'L/XL', q:25,  u:'dz', n:true,  c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Camel Wool Socks',  s:'S/M',  q:25,  u:'dz', n:true,  c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Bison Wool Socks',  s:'L/XL', q:50,  u:'dz', n:true,  c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Bison Wool Socks',  s:'S/M',  q:50,  u:'dz', n:true,  c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
+        { p:'Dog Wool Socks',    s:'L/XL', q:50,  u:'dz', n:false, c:COLORS_LXL },
+        { p:'Dog Wool Socks',    s:'S/M',  q:100, u:'dz', n:false, c:COLORS_SM },
+        { p:'Rabbit Wool Socks', s:'L/XL', q:50,  u:'dz', n:false, c:COLORS_LXL },
+        { p:'Rabbit Wool Socks', s:'S/M',  q:100, u:'dz', n:false, c:COLORS_SM },
+        { p:'Yak Wool Socks',    s:'L/XL', q:75,  u:'dz', n:false, c:COLORS_LXL },
+        { p:'Yak Wool Socks',    s:'S/M',  q:100, u:'dz', n:false, c:COLORS_SM },
+        { p:'Alpaca Wool Socks', s:'L/XL', q:100, u:'dz', n:false, c:COLORS_LXL },
+        { p:'Alpaca Wool Socks', s:'S/M',  q:140, u:'dz', n:false, c:COLORS_SM },
+        { p:'Bear Wool Socks',   s:'L/XL', q:100, u:'dz', n:false, c:[], note:true },
+        { p:'Bear Wool Socks',   s:'S/M',  q:100, u:'dz', n:false, c:[], note:true },
+        { p:'Mink Wool Socks',   s:'L/XL', q:25,  u:'dz', n:true,  c:COLORS_LXL },
+        { p:'Mink Wool Socks',   s:'S/M',  q:25,  u:'dz', n:true,  c:COLORS_SM },
+        { p:'Camel Wool Socks',  s:'L/XL', q:25,  u:'dz', n:true,  c:COLORS_LXL },
+        { p:'Camel Wool Socks',  s:'S/M',  q:25,  u:'dz', n:true,  c:COLORS_SM },
+        { p:'Bison Wool Socks',  s:'L/XL', q:50,  u:'dz', n:true,  c:COLORS_LXL },
+        { p:'Bison Wool Socks',  s:'S/M',  q:50,  u:'dz', n:true,  c:COLORS_SM },
       ]
     },
     {
-      id: 'cotton', name: 'Житомир',
+      id: 'cotton',
       items: [
-        { p:'Zhytomyr Cotton', s:'L/XL', q:240, u:'dz', n:false, c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Zhytomyr Cotton', s:'S/M',  q:60,  u:'dz', n:false, c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#3D1A5C',t:'Pantone 2695'}] },
+        { p:'Zhytomyr Cotton', s:'L/XL', q:240, u:'dz', n:false, c:COLORS_LXL },
+        { p:'Zhytomyr Cotton', s:'S/M',  q:60,  u:'dz', n:false, c:[{h:'#FFFFFF',k:'classicWhite'},{h:'#0A0A0A',k:'jetBlack'},{h:'#9E9E9E',k:'greyHeather'},{h:'#879884',k:'sageGreen'},{h:'#1C2C5F',k:'pantone655'},{h:'#3D1A5C',k:'pantone2695'}] },
       ]
     },
     {
-      id: 'diab', name: 'Диабетические',
+      id: 'diab',
       items: [
-        { p:'Diabetic Mesh',    s:'OneSize', q:50,  u:'dz', n:false, c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#FFFFFF',t:'Classic White'}] },
-        { p:'Diabetic Cotton',  s:'S/M',     q:200, u:'dz', n:false, c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Diabetic Cotton',  s:'M/L',     q:400, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'},{h:'#4880A0',t:'Стальной синий'},{h:'#907050',t:'Коричневый'},{h:'#F5F5F5',t:'Белый'},{h:'#D8C8A0',t:'Бежевый'},{h:'#C0C0C0',t:'Светло-серый'}] },
-        { p:'Diabetic Cotton',  s:'L/XL',    q:400, u:'dz', n:false, c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
-        { p:'Diabetic Cotton · Чёрный', s:'S/M',  q:50,  u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Diabetic Cotton · Чёрный', s:'M/L',  q:100, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Diabetic Cotton · Чёрный', s:'L/XL', q:100, u:'dz', n:false, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Diabetic Lavender',s:'S/M',     q:50,  u:'dz', n:false, c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Diabetic Lavender',s:'M/L',     q:100, u:'dz', n:false, c:[{h:'#FFFFFF',t:'Classic White'},{h:'#0A0A0A',t:'Jet Black'},{h:'#9E9E9E',t:'Grey Heather'},{h:'#879884',t:'Sage Green'},{h:'#E6E6FA',t:'Soft Lavender'},{h:'#AAF0D1',t:'Mint'}] },
-        { p:'Diabetic Lavender',s:'L/XL',    q:100, u:'dz', n:false, c:[{h:'#231F20',t:'Process Black'},{h:'#1C2C5F',t:'Pantone 655'},{h:'#717073',t:'Pantone 7540'},{h:'#4A5769',t:'Pantone 7546'}] },
+        { p:'Diabetic Mesh',    s:'OneSize', q:50,  u:'dz', n:false, c:[{h:'#231F20',k:'processBlack'},{h:'#1C2C5F',k:'pantone655'},{h:'#717073',k:'pantone7540'},{h:'#FFFFFF',k:'classicWhite'}] },
+        { p:'Diabetic Cotton',  s:'S/M',     q:200, u:'dz', n:false, c:COLORS_SM },
+        { p:'Diabetic Cotton',  s:'M/L',     q:400, u:'dz', n:false, c:[{h:'#111111',k:'black'},{h:'#4880A0',k:'steelBlue'},{h:'#907050',k:'brown'},{h:'#F5F5F5',k:'white'},{h:'#D8C8A0',k:'beige'},{h:'#C0C0C0',k:'lightGrey'}] },
+        { p:'Diabetic Cotton',  s:'L/XL',    q:400, u:'dz', n:false, c:COLORS_LXL },
+        { p:'Diabetic Cotton',  s:'S/M',  q:50,  u:'dz', n:false, variant:'black', c:[{h:'#111111',k:'black'}] },
+        { p:'Diabetic Cotton',  s:'M/L',  q:100, u:'dz', n:false, variant:'black', c:[{h:'#111111',k:'black'}] },
+        { p:'Diabetic Cotton',  s:'L/XL', q:100, u:'dz', n:false, variant:'black', c:[{h:'#111111',k:'black'}] },
+        { p:'Diabetic Lavender',s:'S/M',     q:50,  u:'dz', n:false, c:COLORS_SM },
+        { p:'Diabetic Lavender',s:'M/L',     q:100, u:'dz', n:false, c:COLORS_SM },
+        { p:'Diabetic Lavender',s:'L/XL',    q:100, u:'dz', n:false, c:COLORS_LXL },
       ]
     },
     {
-      id: 'tights', name: 'Колготки',
+      id: 'tights',
       items: [
-        { p:'Wool Tights',   s:'M',   q:120, u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Wool Tights',   s:'L',   q:180, u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Wool Tights',   s:'XL',  q:250, u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Wool Tights',   s:'2XL', q:250, u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Wool Tights',   s:'3XL', q:250, u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Wool Tights',   s:'4XL', q:250, u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Bamboo Tights', s:'M',   q:30,  u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Bamboo Tights', s:'L',   q:50,  u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Bamboo Tights', s:'XL',  q:80,  u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Bamboo Tights', s:'2XL', q:80,  u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Bamboo Tights', s:'3XL', q:80,  u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
-        { p:'Bamboo Tights', s:'4XL', q:80,  u:'шт', n:true, c:[{h:'#111111',t:'Чёрный'}] },
+        { p:'Wool Tights',   s:'M',   q:120, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',   s:'L',   q:180, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',   s:'XL',  q:250, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',   s:'2XL', q:250, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',   s:'3XL', q:250, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',   s:'4XL', q:250, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights', s:'M',   q:30,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights', s:'L',   q:50,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights', s:'XL',  q:80,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights', s:'2XL', q:80,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights', s:'3XL', q:80,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights', s:'4XL', q:80,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
       ]
     }
   ];
 
+  function prodKey(r) { return r.p + '|' + (r.variant || ''); }
+  function colorName(key) { return COLOR_NAMES[key][lang]; }
+
   function groupBy(items) {
     const map = new Map();
     items.forEach(r => {
-      if (!map.has(r.p)) map.set(r.p, { p: r.p, n: r.n, rows: [] });
-      map.get(r.p).rows.push(r);
+      const key = prodKey(r);
+      if (!map.has(key)) map.set(key, { p: r.p, variant: r.variant, n: r.n, rows: [] });
+      map.get(key).rows.push(r);
     });
     return [...map.values()];
   }
@@ -426,17 +528,46 @@
     items.forEach(r => {
       if (r.note) { notes.push(r); return; }
       r.c.forEach(c => {
-        if (!map.has(c.h)) map.set(c.h, {t: c.t, qty: 0, u: r.u});
-        map.get(c.h).qty += r.q;
+        if (!map.has(c.k)) map.set(c.k, { h: c.h, qty: 0, u: r.u });
+        map.get(c.k).qty += r.q;
       });
     });
     return {
-      colors: [...map.entries()].map(([h, v]) => ({h, ...v})).sort((a, b) => b.qty - a.qty),
+      colors: [...map.entries()].map(([k, v]) => ({k, ...v})).sort((a, b) => b.qty - a.qty),
       notes
     };
   }
 
+  function swatchesHTML(row) {
+    if (row.note) return `<span class="sw-note">${STRINGS[lang].prevOrder}</span>`;
+    if (!row.c.length) return '<span class="sw-tbd">?</span>';
+    return row.c.map(c =>
+      `<span class="sw" style="background:${c.h}" data-h="${c.h}" data-k="${c.k}"></span>`
+    ).join('');
+  }
+
+  function buildSection(cat) {
+    const S = STRINGS[lang];
+    const groups = groupBy(cat.items);
+    let h = `<div class="section" id="s-${cat.id}">`;
+    groups.forEach(g => {
+      const label = g.p + (g.variant ? ' · ' + S.variantBlack : '');
+      h += `<div class="card${g.n ? ' is-new' : ''}">`;
+      h += `<div class="card-head"><span class="prod-name">${label}</span>${g.n ? `<span class="badge-new">${S.badgeNew}</span>` : ''}</div>`;
+      g.rows.forEach(r => {
+        h += `<div class="srow">
+          <span class="sz">${r.s}</span>
+          <span class="qty">${r.q}<em>${UNIT_LABELS[r.u][lang]}</em></span>
+          <div class="swatches">${swatchesHTML(r)}</div>
+        </div>`;
+      });
+      h += '</div>';
+    });
+    return h + '</div>';
+  }
+
   function buildAllSection() {
+    const S = STRINGS[lang];
     const wool   = CATS.find(c => c.id === 'wool').items;
     const cotton = CATS.find(c => c.id === 'cotton').items;
     const diab   = CATS.find(c => c.id === 'diab').items;
@@ -448,56 +579,57 @@
     let h = '<div class="section" id="s-all">';
 
     // 1. Category totals
-    h += `<div class="all-section-title" style="margin-top:0">Итого по категориям</div>
+    h += `<div class="all-section-title" style="margin-top:0">${S.sectionCatTotals}</div>
     <div class="all-totals-grid">
-      <div class="all-total-card"><div class="atc-lbl">Шерстяные носки</div><div class="atc-val">${sum(wool)}<span>dz</span></div></div>
-      <div class="all-total-card"><div class="atc-lbl">Диабетические</div><div class="atc-val">${sum(diab)}<span>dz</span></div></div>
-      <div class="all-total-card"><div class="atc-lbl">Носки Житомир</div><div class="atc-val">${sum(cotton)}<span>dz</span></div></div>
-      <div class="all-total-card"><div class="atc-lbl">Колготки Шерсть</div><div class="atc-val">${sum(woolT)}<span>шт</span></div></div>
-      <div class="all-total-card"><div class="atc-lbl">Колготки Бамбук</div><div class="atc-val">${sum(bambT)}<span>шт</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.wool}</div><div class="atc-val">${sum(wool)}<span>${UNIT_LABELS.dz[lang]}</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.diab}</div><div class="atc-val">${sum(diab)}<span>${UNIT_LABELS.dz[lang]}</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.cotton}</div><div class="atc-val">${sum(cotton)}<span>${UNIT_LABELS.dz[lang]}</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.woolTights}</div><div class="atc-val">${sum(woolT)}<span>${UNIT_LABELS.pcs[lang]}</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.bambTights}</div><div class="atc-val">${sum(bambT)}<span>${UNIT_LABELS.pcs[lang]}</span></div></div>
     </div>`;
 
     // 2. Color breakdown per group
     const groups = [
-      {label: 'Шерстяные носки', items: wool, unit: 'dz'},
-      {label: 'Диабетические', items: diab, unit: 'dz'},
-      {label: 'Носки Житомир', items: cotton, unit: 'dz'},
-      {label: 'Колготки Шерсть', items: woolT, unit: 'шт'},
-      {label: 'Колготки Бамбук', items: bambT, unit: 'шт'},
+      {label: S.groupLabels.wool, items: wool, unit: 'dz'},
+      {label: S.groupLabels.diab, items: diab, unit: 'dz'},
+      {label: S.groupLabels.cotton, items: cotton, unit: 'dz'},
+      {label: S.groupLabels.woolTights, items: woolT, unit: 'pcs'},
+      {label: S.groupLabels.bambTights, items: bambT, unit: 'pcs'},
     ];
-    h += `<div class="all-section-title">Цвета по категориям</div>`;
+    h += `<div class="all-section-title">${S.sectionColorsByCat}</div>`;
     groups.forEach(({label, items, unit}) => {
       const {colors, notes} = colorStats(items);
       h += `<div class="all-color-group"><div class="acg-title">${label}</div>`;
       colors.forEach(c => {
         h += `<div class="acg-row">
-          <span class="sw" style="background:${c.h}" data-h="${c.h}" data-t="${c.t}"></span>
-          <span class="acg-name">${c.t}</span>
-          <span class="acg-qty">${c.qty}<em>${unit}</em></span>
+          <span class="sw" style="background:${c.h}" data-h="${c.h}" data-k="${c.k}"></span>
+          <span class="acg-name">${colorName(c.k)}</span>
+          <span class="acg-qty">${c.qty}<em>${UNIT_LABELS[unit][lang]}</em></span>
         </div>`;
       });
       notes.forEach(r => {
         h += `<div class="acg-row">
           <span class="sw-tbd">?</span>
-          <span class="acg-name" style="font-style:italic;color:var(--text2)">${r.p} · ${r.s} — По предыдущему заказу</span>
-          <span class="acg-qty">${r.q}<em>${r.u}</em></span>
+          <span class="acg-name" style="font-style:italic;color:var(--text2)">${r.p} · ${r.s} — ${S.prevOrder}</span>
+          <span class="acg-qty">${r.q}<em>${UNIT_LABELS[r.u][lang]}</em></span>
         </div>`;
       });
       h += '</div>';
     });
 
     // 3. Detailed table
-    h += `<div class="all-section-title">Детально · весь заказ</div>
+    h += `<div class="all-section-title">${S.sectionDetailed}</div>
     <div class="all-table-wrap"><table class="all-table">
-      <thead><tr><th>Продукт</th><th>Размер</th><th>Кол-во</th><th>Цвета</th></tr></thead>
+      <thead><tr><th>${S.thProduct}</th><th>${S.thSize}</th><th>${S.thQty}</th><th>${S.thColors}</th></tr></thead>
       <tbody>`;
     CATS.forEach(cat => {
-      h += `<tr class="atr-cat"><td colspan="4">${cat.name}</td></tr>`;
+      h += `<tr class="atr-cat"><td colspan="4">${S.catNames[cat.id]}</td></tr>`;
       cat.items.forEach(r => {
+        const label = r.p + (r.variant ? ' · ' + S.variantBlack : '');
         h += `<tr>
-          <td>${r.p}</td>
+          <td>${label}</td>
           <td><span class="sz" style="min-width:auto">${r.s}</span></td>
-          <td><span class="at-qty">${r.q}</span><span class="at-unit">${r.u}</span></td>
+          <td><span class="at-qty">${r.q}</span><span class="at-unit">${UNIT_LABELS[r.u][lang]}</span></td>
           <td><div class="swatches">${swatchesHTML(r)}</div></td>
         </tr>`;
       });
@@ -506,53 +638,76 @@
     return h;
   }
 
-  function swatchesHTML(row) {
-    if (row.note) return `<span class="sw-note">${row.note}</span>`;
-    if (!row.c.length) return '<span class="sw-tbd">?</span>';
-    return row.c.map(c =>
-      `<span class="sw" style="background:${c.h}" data-h="${c.h}" data-t="${c.t}"></span>`
-    ).join('');
+  function renderFooter(catId) {
+    const S = STRINGS[lang];
+    if (catId === 'all') {
+      const pos   = CATS.reduce((s, c) => s + c.items.length, 0);
+      const prods = CATS.reduce((s, c) => s + new Set(c.items.map(prodKey)).size, 0);
+      $('#ftr').html(`
+        <div class="ftr-label">${S.ftrAllTitle}</div>
+        <div class="totals" style="grid-template-columns:1fr 1fr">
+          <div class="tc"><div class="tc-lbl">${S.lblPositions}</div><div class="tc-val">${pos}</div></div>
+          <div class="tc"><div class="tc-lbl">${S.lblProducts}</div><div class="tc-val">${prods}</div></div>
+        </div>
+      `);
+      return;
+    }
+    const cat = CATS.find(c => c.id === catId);
+    const total = cat.items.reduce((s, r) => s + r.q, 0);
+    const unit  = UNIT_LABELS[cat.items[0]?.u || 'dz'][lang];
+    const prods = new Set(cat.items.map(prodKey)).size;
+    $('#ftr').html(`
+      <div class="ftr-label">${S.ftrCatTitlePrefix}${S.catNames[catId]}</div>
+      <div class="totals" style="grid-template-columns:1fr 1fr">
+        <div class="tc">
+          <div class="tc-lbl">${S.lblQty}</div>
+          <div class="tc-val">${total}<span>${unit}</span></div>
+        </div>
+        <div class="tc">
+          <div class="tc-lbl">${S.lblNames}</div>
+          <div class="tc-val">${prods}</div>
+        </div>
+      </div>
+    `);
   }
 
-  function buildSection(cat) {
-    const groups = groupBy(cat.items);
-    let h = `<div class="section" id="s-${cat.id}">`;
-    groups.forEach(g => {
-      h += `<div class="card${g.n ? ' is-new' : ''}">`;
-      h += `<div class="card-head"><span class="prod-name">${g.p}</span>${g.n ? '<span class="badge-new">✦ Новинка</span>' : ''}</div>`;
-      g.rows.forEach(r => {
-        h += `<div class="srow">
-          <span class="sz">${r.s}</span>
-          <span class="qty">${r.q}<em>${r.u}</em></span>
-          <div class="swatches">${swatchesHTML(r)}</div>
-        </div>`;
-      });
-      h += '</div>';
+  function render() {
+    document.documentElement.lang = lang;
+    document.title = STRINGS[lang].docTitle;
+    $('#hdrTitle').text(STRINGS[lang].headerTitle);
+    $('.lang-btn').removeClass('active');
+    $(`.lang-btn[data-lang="${lang}"]`).addClass('active');
+
+    const activeId = $('.tab.active').data('id') || 'all';
+
+    const $tabs = $('#tabs').empty();
+    const $content = $('#content').empty();
+
+    const totalProds = CATS.reduce((s, c) => s + new Set(c.items.map(prodKey)).size, 0);
+    $tabs.append(`<div class="tab${activeId === 'all' ? ' active' : ''}" data-id="all">${STRINGS[lang].tabAll}<span class="cnt">${totalProds}</span></div>`);
+    const $allSection = $(buildAllSection());
+    if (activeId === 'all') $allSection.addClass('active');
+    $content.append($allSection);
+
+    CATS.forEach(cat => {
+      const unique = new Set(cat.items.map(prodKey)).size;
+      $tabs.append(`<div class="tab${activeId === cat.id ? ' active' : ''}" data-id="${cat.id}">${STRINGS[lang].catNames[cat.id]}<span class="cnt">${unique}</span></div>`);
+      const $sec = $(buildSection(cat));
+      if (activeId === cat.id) $sec.addClass('active');
+      $content.append($sec);
     });
-    return h + '</div>';
+
+    renderFooter(activeId);
   }
 
   $(function () {
-    const $tabs = $('#tabs'), $content = $('#content');
+    render();
 
-    // "Все" tab
-    const totalProds = CATS.reduce((s, c) => s + new Set(c.items.map(r => r.p)).size, 0);
-    $tabs.append(`<div class="tab active" data-id="all">Все<span class="cnt">${totalProds}</span></div>`);
-    $content.append($(buildAllSection()).addClass('active'));
-
-    // Category tabs + sections
-    CATS.forEach(cat => {
-      const unique = new Set(cat.items.map(r => r.p)).size;
-      $tabs.append(`<div class="tab" data-id="${cat.id}">${cat.name}<span class="cnt">${unique}</span></div>`);
-      $content.append($(buildSection(cat)));
-    });
-
-    // Sticky tabs offset
     const hdrH = $('.hdr').outerHeight();
     $('.tabs').css('top', hdrH);
 
     // Tab switch
-    $tabs.on('click', '.tab', function () {
+    $('#tabs').on('click', '.tab', function () {
       const id = $(this).data('id');
       $('.tab').removeClass('active');
       $(this).addClass('active');
@@ -563,50 +718,25 @@
       window.scrollTo({ top: hdrH + $('.tabs').outerHeight(), behavior: 'smooth' });
     });
 
-    // Footer
-    function renderFooter(catId) {
-      if (catId === 'all') {
-        const pos   = CATS.reduce((s, c) => s + c.items.length, 0);
-        const prods = CATS.reduce((s, c) => s + new Set(c.items.map(r => r.p)).size, 0);
-        $('#ftr').html(`
-          <div class="ftr-label">Итого · Весь заказ</div>
-          <div class="totals" style="grid-template-columns:1fr 1fr">
-            <div class="tc"><div class="tc-lbl">Позиций</div><div class="tc-val">${pos}</div></div>
-            <div class="tc"><div class="tc-lbl">Продуктов</div><div class="tc-val">${prods}</div></div>
-          </div>
-        `);
-        return;
-      }
-      const cat = CATS.find(c => c.id === catId);
-      const total = cat.items.reduce((s, r) => s + r.q, 0);
-      const unit  = cat.items[0]?.u || 'dz';
-      const prods = new Set(cat.items.map(r => r.p)).size;
-      $('#ftr').html(`
-        <div class="ftr-label">Итого · ${cat.name}</div>
-        <div class="totals" style="grid-template-columns:1fr 1fr">
-          <div class="tc">
-            <div class="tc-lbl">Количество</div>
-            <div class="tc-val">${total}<span>${unit}</span></div>
-          </div>
-          <div class="tc">
-            <div class="tc-lbl">Наименований</div>
-            <div class="tc-val">${prods}</div>
-          </div>
-        </div>
-      `);
-    }
-    renderFooter('all');
+    // Language switch
+    $('#langSwitch').on('click', '.lang-btn', function () {
+      const newLang = $(this).data('lang');
+      if (newLang === lang) return;
+      lang = newLang;
+      localStorage.setItem('roksolana_lang', lang);
+      render();
+    });
 
     // Tooltip
     const $tt = $('#tt'), $sw = $('#tt-sw'), $nm = $('#tt-nm'), $hx = $('#tt-hx'), $ht = $('#tt-ht');
     let $active = null;
 
     function showTT($el) {
-      const hex = $el.data('h'), name = $el.data('t');
+      const hex = $el.data('h'), key = $el.data('k');
       $sw.css('background', hex);
-      $nm.text(name);
+      $nm.text(colorName(key));
       $hx.text(hex.toUpperCase());
-      $ht.text('нажмите чтобы скопировать').removeClass('ok');
+      $ht.text(STRINGS[lang].ttHint).removeClass('ok');
       $tt.addClass('on');
       $active = $el;
 
@@ -633,7 +763,7 @@
       const hex = $hx.text();
       if (navigator.clipboard) {
         navigator.clipboard.writeText(hex).then(() => {
-          $ht.text('Скопировано ✓').addClass('ok');
+          $ht.text(STRINGS[lang].ttCopied).addClass('ok');
           setTimeout(hideTooltip, 900);
         });
       } else { hideTooltip(); }
