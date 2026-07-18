@@ -323,7 +323,7 @@
 
     /* ── Desktop ── */
     @media (min-width: 700px) {
-      .all-totals-grid { grid-template-columns: repeat(5, 1fr); }
+      .all-totals-grid { grid-template-columns: repeat(3, 1fr); }
       .hdr { padding: 20px 32px 16px; }
       .hdr-title { font-size: 19px; }
       .content { padding: 24px 32px; }
@@ -379,9 +379,9 @@
       docTitle: 'Заказ Август 2026 — Roksolana',
       headerTitle: 'Заказ · Август 2026',
       tabAll: 'Все',
-      catNames: { wool: 'Шерсть', cotton: 'Житомир', diab: 'Диабетические', tights: 'Колготки' },
+      catNames: { wool: 'Шерсть', cotton: 'Житомир', diab: 'Диабетические', tights: 'Тайтсы' },
       sectionCatTotals: 'Итого по категориям',
-      groupLabels: { wool: 'Шерстяные носки', diab: 'Диабетические', cotton: 'Носки Житомир', woolTights: 'Колготки Шерсть', bambTights: 'Колготки Бамбук' },
+      groupLabels: { wool: 'Шерстяные носки', diab: 'Диабетические', cotton: 'Носки Житомир', woolTights: 'Колготки Шерсть', woolLeggings: 'Леггинсы Шерсть', bambTights: 'Колготки Бамбук' },
       sectionColorsByCat: 'Цвета по категориям',
       prevOrder: 'По предыдущему заказу',
       sectionDetailed: 'Детально · весь заказ',
@@ -400,7 +400,7 @@
       tabAll: 'Tümü',
       catNames: { wool: 'Yün', cotton: 'Jitomir', diab: 'Diyabetik', tights: 'Tayt' },
       sectionCatTotals: 'Kategoriye Göre Toplam',
-      groupLabels: { wool: 'Yün Çoraplar', diab: 'Diyabetik', cotton: 'Jitomir Çorap', woolTights: 'Yün Tayt', bambTights: 'Bambu Tayt' },
+      groupLabels: { wool: 'Yün Çoraplar', diab: 'Diyabetik', cotton: 'Jitomir Çorap', woolTights: 'Yün Külotlu Çorap', woolLeggings: 'Yün Tayt', bambTights: 'Bambu Külotlu Çorap' },
       sectionColorsByCat: 'Kategoriye Göre Renkler',
       prevOrder: 'Önceki siparişe göre',
       sectionDetailed: 'Detaylı · Tüm Sipariş',
@@ -492,18 +492,24 @@
     {
       id: 'tights',
       items: [
-        { p:'Wool Tights',   s:'M',   q:120, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Wool Tights',   s:'L',   q:180, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Wool Tights',   s:'XL',  q:250, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Wool Tights',   s:'2XL', q:250, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Wool Tights',   s:'3XL', q:250, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Wool Tights',   s:'4XL', q:250, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Bamboo Tights', s:'M',   q:30,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Bamboo Tights', s:'L',   q:50,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Bamboo Tights', s:'XL',  q:80,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Bamboo Tights', s:'2XL', q:80,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Bamboo Tights', s:'3XL', q:80,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
-        { p:'Bamboo Tights', s:'4XL', q:80,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',    s:'M',   q:84,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',    s:'L',   q:126, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',    s:'XL',  q:180, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',    s:'2XL', q:180, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',    s:'3XL', q:180, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Tights',    s:'4XL', q:180, u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Leggings',  s:'M',   q:36,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Leggings',  s:'L',   q:54,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Leggings',  s:'XL',  q:78,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Leggings',  s:'2XL', q:78,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Leggings',  s:'3XL', q:78,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Wool Leggings',  s:'4XL', q:78,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights',  s:'M',   q:30,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights',  s:'L',   q:54,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights',  s:'XL',  q:84,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights',  s:'2XL', q:84,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights',  s:'3XL', q:84,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
+        { p:'Bamboo Tights',  s:'4XL', q:84,  u:'pcs', n:true, c:[{h:'#111111',k:'black'}] },
       ]
     }
   ];
@@ -572,6 +578,7 @@
     const diab   = CATS.find(c => c.id === 'diab').items;
     const allT   = CATS.find(c => c.id === 'tights').items;
     const woolT  = allT.filter(r => r.p === 'Wool Tights');
+    const woolL  = allT.filter(r => r.p === 'Wool Leggings');
     const bambT  = allT.filter(r => r.p === 'Bamboo Tights');
     const sum = arr => arr.reduce((s, r) => s + r.q, 0);
 
@@ -584,6 +591,7 @@
       <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.diab}</div><div class="atc-val">${sum(diab)}<span>${UNIT_LABELS.dz[lang]}</span></div></div>
       <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.cotton}</div><div class="atc-val">${sum(cotton)}<span>${UNIT_LABELS.dz[lang]}</span></div></div>
       <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.woolTights}</div><div class="atc-val">${sum(woolT)}<span>${UNIT_LABELS.pcs[lang]}</span></div></div>
+      <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.woolLeggings}</div><div class="atc-val">${sum(woolL)}<span>${UNIT_LABELS.pcs[lang]}</span></div></div>
       <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.bambTights}</div><div class="atc-val">${sum(bambT)}<span>${UNIT_LABELS.pcs[lang]}</span></div></div>
     </div>`;
 
@@ -593,6 +601,7 @@
       {label: S.groupLabels.diab, items: diab, unit: 'dz'},
       {label: S.groupLabels.cotton, items: cotton, unit: 'dz'},
       {label: S.groupLabels.woolTights, items: woolT, unit: 'pcs'},
+      {label: S.groupLabels.woolLeggings, items: woolL, unit: 'pcs'},
       {label: S.groupLabels.bambTights, items: bambT, unit: 'pcs'},
     ];
     h += `<div class="all-section-title">${S.sectionColorsByCat}</div>`;
