@@ -85,7 +85,6 @@
       padding: 32px 24px; text-align: center;
     }
 
-    /* Brand badge */
     .brand {
       font-size: 11px; letter-spacing: 7px;
       text-transform: uppercase; color: var(--gold);
@@ -93,7 +92,6 @@
       animation: slideUp .7s ease forwards .4s;
     }
 
-    /* Spinning emblem */
     .emblem-wrap {
       position: relative; width: 100px; height: 100px;
       display: flex; align-items: center; justify-content: center;
@@ -118,7 +116,6 @@
       filter: drop-shadow(0 0 18px rgba(212,168,83,.7));
     }
 
-    /* Hello World letters */
     .hello-world {
       display: flex; flex-wrap: wrap;
       justify-content: center; gap: 14px;
@@ -137,12 +134,10 @@
       opacity: 0; transform: translateY(48px) scale(.7);
       animation: letterPop .5s cubic-bezier(.34,1.56,.64,1) forwards;
     }
-
     @keyframes letterPop {
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Tagline */
     .tagline {
       font-size: 15px; letter-spacing: 2px;
       color: rgba(255,255,255,.4);
@@ -150,7 +145,6 @@
       animation: slideUp .7s ease forwards 3.4s;
     }
 
-    /* Pulse dot */
     .dot {
       width: 8px; height: 8px; border-radius: 50%;
       background: var(--gold);
@@ -163,13 +157,11 @@
       50%      { transform: scale(2.2); opacity: .4; }
     }
 
-    /* Shared reveal */
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(22px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Touch ripple */
     .ripple {
       position: fixed; border-radius: 50%; pointer-events: none; z-index: 30;
       background: radial-gradient(circle, rgba(212,168,83,.45), transparent 70%);
@@ -215,7 +207,6 @@
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script>
-    /* ── Stars + Shooting Stars ── */
     const cvs = document.getElementById('canvas');
     const ctx = cvs.getContext('2d');
     let W, H, stars = [], shoots = [];
@@ -249,7 +240,6 @@
 
     function frame() {
       ctx.clearRect(0, 0, W, H);
-
       stars.forEach(s => {
         s.a += s.s * s.d;
         if (s.a > 1 || s.a < .08) s.d *= -1;
@@ -258,14 +248,9 @@
         ctx.fillStyle = `rgba(255,252,230,${s.a})`;
         ctx.fill();
       });
-
       shoots = shoots.filter(s => s.alpha > 0);
       shoots.forEach(s => {
-        const grd = ctx.createLinearGradient(
-          s.x, s.y,
-          s.x - Math.cos(s.angle) * s.len,
-          s.y - Math.sin(s.angle) * s.len
-        );
+        const grd = ctx.createLinearGradient(s.x, s.y, s.x - Math.cos(s.angle) * s.len, s.y - Math.sin(s.angle) * s.len);
         grd.addColorStop(0, `rgba(212,168,83,${s.alpha})`);
         grd.addColorStop(1, 'rgba(212,168,83,0)');
         ctx.beginPath();
@@ -278,38 +263,29 @@
         s.y += Math.sin(s.angle) * s.speed;
         s.alpha -= .016;
       });
-
       requestAnimationFrame(frame);
     }
     frame();
 
-    /* ── Letter Reveal via jQuery ── */
     $(function () {
       const words = ['Hello', 'World'];
       let delay = 1.2;
-
       words.forEach(word => {
         const $w = $('<span class="word">');
         [...word].forEach(ch => {
-          $w.append(
-            $('<span class="letter">').text(ch).css('animation-delay', delay.toFixed(2) + 's')
-          );
+          $w.append($('<span class="letter">').text(ch).css('animation-delay', delay.toFixed(2) + 's'));
           delay += 0.07;
         });
         $('#hw').append($w);
         delay += 0.2;
       });
-
-      /* Touch / click ripple */
       $(document).on('touchstart click', function (e) {
         const t = e.originalEvent?.touches?.[0];
         const x = t ? t.clientX : e.clientX;
         const y = t ? t.clientY : e.clientY;
         const sz = 100;
-        $('<div class="ripple">')
-          .css({ width: sz, height: sz, left: x - sz / 2, top: y - sz / 2 })
-          .appendTo('body')
-          .one('animationend', function () { $(this).remove(); });
+        $('<div class="ripple">').css({ width: sz, height: sz, left: x - sz/2, top: y - sz/2 })
+          .appendTo('body').one('animationend', function () { $(this).remove(); });
       });
     });
   </script>
