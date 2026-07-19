@@ -85,7 +85,7 @@
 
     /* ── Print ── */
     @media print {
-      .hdr, .tabs, .ftr, .tt { display: none !important; }
+      .hdr, .tabs, .ftr, .tt, .lbl-chip, .labels-block, .labels-title { display: none !important; }
       .section { display: block !important; animation: none !important; }
       body { background: #fff; padding: 0; }
       .content { padding: 8px; max-width: 100%; }
@@ -157,6 +157,7 @@
     .card-head {
       display: flex; align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap; row-gap: 6px; column-gap: 10px;
       padding: 12px 14px 10px;
       border-bottom: 1px solid var(--border);
     }
@@ -166,6 +167,10 @@
       font-size: 14px; font-weight: 700;
       color: var(--text); letter-spacing: -.2px;
     }
+    .card-head-right {
+      display: flex; align-items: center; gap: 6px;
+      flex-wrap: wrap;
+    }
     .badge-new {
       font-size: 10px; font-weight: 700; letter-spacing: .4px;
       color: var(--gold);
@@ -174,6 +179,51 @@
       padding: 2px 8px; border-radius: 20px;
       white-space: nowrap; flex-shrink: 0;
     }
+
+    /* ── Label download chip ── */
+    .lbl-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--dark); color: var(--gold2);
+      font-size: 10px; font-weight: 700; letter-spacing: .4px;
+      padding: 5px 10px; border-radius: 20px;
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
+      transition: background .2s, color .2s, transform .15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lbl-chip:hover  { background: var(--gold); color: var(--dark); }
+    .lbl-chip:active { transform: scale(.94); }
+    .lbl-chip svg { flex-shrink: 0; }
+
+    /* ── Labels block (All tab) ── */
+    .labels-block {
+      background: var(--dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .lblr {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 16px;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      transition: background .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lblr:last-child { border-bottom: none; }
+    .lblr:hover { background: rgba(212,168,83,.08); }
+    .lblr-ic {
+      width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+      background: rgba(212,168,83,.12);
+      border: 1px solid rgba(212,168,83,.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      transition: background .2s, color .2s;
+    }
+    .lblr:hover .lblr-ic { background: var(--gold); color: var(--dark); }
+    .lblr-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+    .lblr-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: -.2px; }
+    .lblr-meta { font-size: 11px; color: rgba(255,255,255,.45); }
+    .lblr-size { font-size: 11px; font-weight: 600; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
 
     /* ── Size row ── */
     .srow {
@@ -393,6 +443,8 @@
       lblQty: 'Количество', lblNames: 'Наименований',
       ttHint: 'нажмите чтобы скопировать', ttCopied: 'Скопировано ✓',
       variantBlack: 'Чёрный',
+      sectionLabels: 'Этикетки · Скачать',
+      lblChip: 'Этикетки',
     },
     tr: {
       docTitle: 'Sipariş Ağustos 2026 — Roksolana',
@@ -412,6 +464,8 @@
       lblQty: 'Adet', lblNames: 'Ürün Çeşidi',
       ttHint: 'kopyalamak için dokun', ttCopied: 'Kopyalandı ✓',
       variantBlack: 'Siyah',
+      sectionLabels: 'Etiketler · İndir',
+      lblChip: 'Etiketler',
     }
   };
 
@@ -441,6 +495,30 @@
   };
 
   let lang = localStorage.getItem('roksolana_lang') || 'tr';
+
+  const LABELS_BASE = '../labels/';
+  const LABELS = [
+    { p:'Yak Wool Socks',    name:'Yak Wool Socks',         file:'Yak.zip',            mb:11, note:{ru:'S/M + L/XL · PDF + JPG', tr:'S/M + L/XL · PDF + JPG'} },
+    { p:'Alpaca Wool Socks', name:'Alpaca Wool Socks',      file:'Alpaca.zip',         mb:12, note:{ru:'S/M + L/XL · PDF + JPG', tr:'S/M + L/XL · PDF + JPG'} },
+    { p:'Bear Wool Socks',   name:'Bear Wool Socks · S/M',  file:'Bear_SM.zip',        mb:19, chip:'S/M',  note:{ru:'S/M · PDF', tr:'S/M · PDF'} },
+    { p:'Bear Wool Socks',   name:'Bear Wool Socks · L/XL', file:'Bear_LXL.zip',       mb:19, chip:'L/XL', note:{ru:'L/XL · PDF', tr:'L/XL · PDF'} },
+    { p:'Mink Wool Socks',   name:'Mink Wool Socks',        file:'Mink.zip',           mb:12, note:{ru:'S/M + L/XL · PDF + JPG', tr:'S/M + L/XL · PDF + JPG'} },
+    { p:'Camel Wool Socks',  name:'Camel Wool Socks',       file:'Camel.zip',          mb:13, note:{ru:'S/M + L/XL · PDF + JPG', tr:'S/M + L/XL · PDF + JPG'} },
+    { p:'Bison Wool Socks',  name:'Bison Wool Socks',       file:'Bison.zip',          mb:17, note:{ru:'S/M + L/XL · PDF + JPG', tr:'S/M + L/XL · PDF + JPG'} },
+    { p:'Diabetic Mesh',     name:'Diabetic Mesh (Arbuz)',  file:'Diabetic_Mesh_Arbuz.zip', mb:25, note:{ru:'OneSize · PDF + JPG + SVG', tr:'OneSize · PDF + JPG + SVG'} },
+    { p:'Diabetic Lavender', name:'Diabetic Lavender',      file:'Lavender_Diabetic_Socks.zip', mb:25, note:{ru:'S/M + M/L + L/XL · PDF + PNG', tr:'S/M + M/L + L/XL · PDF + PNG'} },
+    { p:'Wool Tights',       name:'Wool Tights',            file:'Tights_Wool.zip',    mb:23, note:{ru:'6 размеров M–4XL · PDF + JPG', tr:'6 beden M–4XL · PDF + JPG'} },
+    { p:'Wool Leggings',     name:'Wool Leggings',          file:'Leggings_Wool.zip',  mb:23, note:{ru:'6 размеров M–4XL · PDF + JPG', tr:'6 beden M–4XL · PDF + JPG'} },
+    { p:'Bamboo Tights',     name:'Bamboo Tights',          file:'Bamboo_Tights.zip',  mb:18, note:{ru:'6 размеров M–4XL · PDF + JPG', tr:'6 beden M–4XL · PDF + JPG'} },
+  ];
+  const DL_ICON_SM = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><line x1="4" y1="21" x2="20" y2="21"/></svg>';
+  const DL_ICON_LG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><line x1="4" y1="21" x2="20" y2="21"/></svg>';
+
+  function labelChipsHTML(p) {
+    return LABELS.filter(l => l.p === p).map(l =>
+      `<a class="lbl-chip" href="${LABELS_BASE}${l.file}" download title="${l.file}">${DL_ICON_SM}${l.chip || STRINGS[lang].lblChip}</a>`
+    ).join('');
+  }
 
   const COLORS_LXL = [{h:'#231F20',k:'processBlack'},{h:'#1C2C5F',k:'pantone655'},{h:'#717073',k:'pantone7540'},{h:'#4A5769',k:'pantone7546'}];
   const COLORS_SM  = [{h:'#FFFFFF',k:'classicWhite'},{h:'#0A0A0A',k:'jetBlack'},{h:'#9E9E9E',k:'greyHeather'},{h:'#879884',k:'sageGreen'},{h:'#E6E6FA',k:'softLavender'},{h:'#AAF0D1',k:'mint'}];
@@ -557,8 +635,11 @@
     let h = `<div class="section" id="s-${cat.id}">`;
     groups.forEach(g => {
       const label = g.p + (g.variant ? ' · ' + S.variantBlack : '');
+      const chips = g.variant ? '' : labelChipsHTML(g.p);
+      const badge = g.n ? `<span class="badge-new">${S.badgeNew}</span>` : '';
+      const right = (chips || badge) ? `<span class="card-head-right">${chips}${badge}</span>` : '';
       h += `<div class="card${g.n ? ' is-new' : ''}">`;
-      h += `<div class="card-head"><span class="prod-name">${label}</span>${g.n ? `<span class="badge-new">${S.badgeNew}</span>` : ''}</div>`;
+      h += `<div class="card-head"><span class="prod-name">${label}</span>${right}</div>`;
       g.rows.forEach(r => {
         h += `<div class="srow">
           <span class="sz">${r.s}</span>
@@ -595,7 +676,21 @@
       <div class="all-total-card"><div class="atc-lbl">${S.groupLabels.bambTights}</div><div class="atc-val">${sum(bambT)}<span>${UNIT_LABELS.pcs[lang]}</span></div></div>
     </div>`;
 
-    // 2. Color breakdown per group
+    // 2. Labels download block
+    h += `<div class="all-section-title labels-title">${S.sectionLabels}</div><div class="labels-block">`;
+    LABELS.forEach(l => {
+      h += `<a class="lblr" href="${LABELS_BASE}${l.file}" download>
+        <span class="lblr-ic">${DL_ICON_LG}</span>
+        <span class="lblr-main">
+          <span class="lblr-name">${l.name}</span>
+          <span class="lblr-meta">${l.note[lang]} · ${l.file}</span>
+        </span>
+        <span class="lblr-size">${l.mb} MB</span>
+      </a>`;
+    });
+    h += '</div>';
+
+    // 3. Color breakdown per group
     const groups = [
       {label: S.groupLabels.wool, items: wool, unit: 'dz'},
       {label: S.groupLabels.diab, items: diab, unit: 'dz'},
@@ -625,7 +720,7 @@
       h += '</div>';
     });
 
-    // 3. Detailed table
+    // 4. Detailed table
     h += `<div class="all-section-title">${S.sectionDetailed}</div>
     <div class="all-table-wrap"><table class="all-table">
       <thead><tr><th>${S.thProduct}</th><th>${S.thSize}</th><th>${S.thQty}</th><th>${S.thColors}</th></tr></thead>
